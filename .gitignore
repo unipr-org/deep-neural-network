@@ -43,3 +43,7 @@
 !test_ann*.cpp
 !test_ann*.hh
 !test_ann*.h
+
+# clangd
+compile_commands.json
+.clang-format
