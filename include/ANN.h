@@ -3,14 +3,13 @@
 
 #include <vector>
 #include "Layer.h"
-using namespace std;
 
 class ANN {
 private:
-    vector<Layer> layers;
+    std::vector<Layer> layers;
 
 public:
-    ANN(const vector<unsigned> &topology);
+    ANN(const std::vector<unsigned> &topology);
     void print();
     void printCFG();
 };

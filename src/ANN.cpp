@@ -1,4 +1,5 @@
 #include "ANN.h"
+#include "spdlog/spdlog.h"
 #include <iostream>
 #include <fstream>
 #include <filesystem>
@@ -32,9 +33,7 @@ ANN::ANN(const vector<unsigned> &topology){
  */
 void 
 ANN::print(){
-    cout << endl
-         << "Printing Artificial Neural Network:" << endl
-         << endl;
+    spdlog::info("Printing Artificial Neural Network");
 
     for (unsigned i = 0; i < layers.size(); ++i){
         layers[i].print();
@@ -59,7 +58,7 @@ ANN::printCFG(){
 
     if (!fs::exists(folderPath)) {
         if (!fs::create_directory(folderPath)) {
-            std::cerr << "Error: Unable to create directory " << folderPath << endl;
+            spdlog::error("Unable to create directory {}", folderPath);
             return;
         }
     }
@@ -67,7 +66,7 @@ ANN::printCFG(){
     ofstream outFile(filename);
 
     if (!outFile.is_open()) {
-        cerr << "Error: Unable to open " << filename << endl;
+        spdlog::error("Unable to open {}", filename);
         return;
     }
     
@@ -85,7 +84,7 @@ ANN::printCFG(){
     outFile << "}" << endl;
     outFile.close();
 
-    cout << filename << " generated successfully." << endl;
-    cout << "To generate PNG please use: " << endl;
+    spdlog::info("{} generated successfully.", filename);
+    spdlog::info("To generate PNG please use: ");
     cout << "dot -Tpng " + filename + " -o " + folderPath + "/ann.png && open " + folderPath + "/ann.png" << endl;
 }

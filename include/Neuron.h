@@ -3,7 +3,6 @@
 
 #include <vector>
 #include "Connection.h"
-using namespace std;
 
 class Neuron {
 private:
@@ -15,7 +14,7 @@ private:
     double activationFunction(double input);
     double activationFunctionDerivative(double input);
 public:
-    vector<Connection> connections;
+    std::vector<Connection> connections;
     Neuron(int neuronIndex, int layerIndex, int numberOfOutputConnections, bool bias);
 
     double getOutputValue();
@@ -23,7 +22,7 @@ public:
 
     int getIndex(){ return neuronIndex; }
     void print();
-    void printCFG(ofstream&);
+    void printCFG(std::ofstream&);
 };
 
 #endif // NEURON_HH_INCLUSION_GUARD

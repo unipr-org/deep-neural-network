@@ -1,12 +1,12 @@
 #include <iostream>
 #include <vector>
 #include "ANN.h"
+#include "spdlog/spdlog.h"
 
-//! To compile:
-//! g++ -o main.out main.cpp ./src/ANN.cpp ./src/Connection.cpp ./src/Layer.cpp ./src/Neuron.cpp -I./include -O1
+using namespace std;
 
 int main(){
-    vector<unsigned> topology = {3, 5, 5, 1};
+    vector<unsigned> topology = {2, 4, 1};
 
     ANN ann(topology);
 
