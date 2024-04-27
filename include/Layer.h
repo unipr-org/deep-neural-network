@@ -15,6 +15,7 @@ public:
     int getNumbersOfNeurons() { return neurons.size(); };
     void print();
     void printCFG(ofstream&);
+    void printSubgraphCFG(ofstream&, unsigned);
 };
 
 #endif // LAYER_HH_INCLUSION_GUARD

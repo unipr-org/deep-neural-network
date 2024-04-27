@@ -55,3 +55,34 @@ Layer::printCFG(ofstream& outFile){
         neurons[i].printCFG(outFile);
     }
 }
+
+/**
+ * @brief Print the subgraph representing the layer in the DOT format.
+ * 
+ * This method prints a subgraph representing the layer in the DOT format.
+ * Each subgraph represents a layer in the neural network graph. The nodes within
+ * the subgraph represent neurons in the layer.
+ * 
+ * @param outFile The output file stream where the DOT format will be written.
+ * @param numberOfLayers The total number of layers in the neural network.
+ */
+void 
+Layer::printSubgraphCFG(ofstream& outFile, unsigned numberOfLayers){
+    outFile << "subgraph cluster_layer_" << layerIndex << " {" << endl;
+    unsigned int lastLayer = static_cast<unsigned int>(numberOfLayers) - 1;
+    
+    if(layerIndex == 0)
+        outFile << "node [style=filled, color=lightblue];" << endl;
+    else if(layerIndex == lastLayer)
+        outFile << "node [style=filled, color=pink];" << endl;
+    else 
+        outFile << "node [style=filled, color=lightgreen];" << endl;
+
+    outFile << "label=\"Layer " << layerIndex << "\";" << endl;
+
+    for (unsigned i = 0; i < neurons.size(); ++i){
+        string neuronName = to_string(layerIndex) + "_" + to_string(i);
+        outFile << "\"node" << neuronName << "\";" << endl;
+    }
+    outFile << "}" << endl;
+}

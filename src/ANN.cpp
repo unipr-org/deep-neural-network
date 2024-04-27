@@ -73,15 +73,18 @@ ANN::printCFG(){
     
     outFile << "digraph unix {" << endl;
     outFile << "rankdir=\"LR\";" << endl;
-    outFile << "ranksep=3; // Imposta lo spazio tra i livelli a 3" << endl;
-    outFile << "nodesep=1.0; // Imposta lo spazio tra i nodi a 1.0" << endl;
+    outFile << "ranksep=4;" << endl;
+    outFile << "nodesep=1.0;" << endl;
     
-    for (unsigned i = 0; i < layers.size(); ++i){
+    for (unsigned i = 0; i < layers.size(); ++i)
+        layers[i].printSubgraphCFG(outFile, layers.size());
+    
+    for (unsigned i = 0; i < layers.size(); ++i)
         layers[i].printCFG(outFile);
-    }
 
     outFile << "}" << endl;
     outFile.close();
+
     cout << filename << " generated successfully." << endl;
     cout << "To generate PNG please use: " << endl;
     cout << "dot -Tpng " + filename + " -o " + folderPath + "/ann.png && open " + folderPath + "/ann.png" << endl;

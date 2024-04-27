@@ -84,7 +84,7 @@ Neuron::printCFG(ofstream& outFile){
     if(isBias)
         outFile << "\"node" << name << "\" [label=\"bias\"];" << endl;
     else
-        outFile << "\"node" << name << "\" [label=\"" << name << "\"];" << endl;
+        outFile << "\"node" << name << "\" [label=\"" << to_string(neuronIndex) << "\"];" << endl;
     
     for (auto connection : connections) {
         string nextName = to_string((layerIndex + 1)) + "_" + to_string(connection.getIndexNeuronLinked());
