@@ -2,7 +2,7 @@
 #define ANN_HH_INCLUSION_GUARD 1
 
 #include <vector>
-#include "include/Layer.h"
+#include "Layer.h"
 using namespace std;
 
 class ANN {
@@ -10,7 +10,9 @@ private:
     vector<Layer> layers;
 
 public:
-    ANN(const vector<int> &topology);
+    ANN(const vector<unsigned> &topology);
+    void print();
+    void printCFG();
 };
 
 #endif // ANN_HH_INCLUSION_GUARD

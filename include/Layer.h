@@ -2,7 +2,7 @@
 #define LAYER_HH_INCLUSION_GUARD 1
 
 #include <vector>
-#include "include/Neuron.h"
+#include "Neuron.h"
 using namespace std;
 
 class Layer {
@@ -13,6 +13,8 @@ private:
 public:
     Layer(int index, int numberOfNeurons, int numberOfOutputConnections);
     int getNumbersOfNeurons() { return neurons.size(); };
+    void print();
+    void printCFG(ofstream&);
 };
 
 #endif // LAYER_HH_INCLUSION_GUARD

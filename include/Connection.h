@@ -7,7 +7,9 @@ private:
     int indexNeuronLinked;
 public:
     Connection(int);
-    double getWeight();
+    double getWeight() { return weight; };
+    int getIndexNeuronLinked() { return indexNeuronLinked; };
+    void print();
 };
 
 #endif // CONNECTION_HH_INCLUSION_GUARD
