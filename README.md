@@ -1,4 +1,17 @@
 # artificial-neural-network
+
+## How to compile
+
+```bash
+mkdir build
+cd build
+cmake ..
+make
+```
+
+To turn on all types of logs use `cmake -DDEBUG=ON`.
+
+## OLD
 How to compile:
 ```bash
 g++ -o main.out main.cpp ./src/ANN.cpp ./src/Connection.cpp ./src/Layer.cpp ./src/Neuron.cpp -I./include -O1
