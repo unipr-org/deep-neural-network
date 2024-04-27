@@ -36,6 +36,7 @@
 **/.vscode/**
 **/graph/**
 **/build/**
+.cache*
 
 # Tests
 !test_ann*.txt

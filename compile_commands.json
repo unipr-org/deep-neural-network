@@ -1,0 +1,62 @@
+[
+  {
+    "arguments": [
+      "/usr/bin/g++",
+      "-c",
+      "-std=c++11",
+      "-Iinclude/",
+      "-DDEBUG",
+      "main.cpp"
+    ],
+    "directory": "/home/manuel/university/git/artificial-neural-network",
+    "file": "/home/manuel/university/git/artificial-neural-network/main.cpp"
+  },
+  {
+    "arguments": [
+      "/usr/bin/g++",
+      "-c",
+      "-std=c++11",
+      "-Iinclude/",
+      "-DDEBUG",
+      "src/ANN.cpp"
+    ],
+    "directory": "/home/manuel/university/git/artificial-neural-network",
+    "file": "/home/manuel/university/git/artificial-neural-network/src/ANN.cpp"
+  },
+  {
+    "arguments": [
+      "/usr/bin/g++",
+      "-c",
+      "-std=c++11",
+      "-Iinclude/",
+      "-DDEBUG",
+      "src/Connection.cpp"
+    ],
+    "directory": "/home/manuel/university/git/artificial-neural-network",
+    "file": "/home/manuel/university/git/artificial-neural-network/src/Connection.cpp"
+  },
+  {
+    "arguments": [
+      "/usr/bin/g++",
+      "-c",
+      "-std=c++11",
+      "-Iinclude/",
+      "-DDEBUG",
+      "src/Layer.cpp"
+    ],
+    "directory": "/home/manuel/university/git/artificial-neural-network",
+    "file": "/home/manuel/university/git/artificial-neural-network/src/Layer.cpp"
+  },
+  {
+    "arguments": [
+      "/usr/bin/g++",
+      "-c",
+      "-std=c++11",
+      "-Iinclude/",
+      "-DDEBUG",
+      "src/Neuron.cpp"
+    ],
+    "directory": "/home/manuel/university/git/artificial-neural-network",
+    "file": "/home/manuel/university/git/artificial-neural-network/src/Neuron.cpp"
+  }
+]
