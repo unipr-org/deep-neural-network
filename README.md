@@ -54,3 +54,10 @@ for-each layer
 	end for-each neuron
 end for-each layer
 ```
+
+## TODO-List
+
+- [ ] Implementare classi astratte (interfacce)
+- [ ] Utilizzare il pattern _bridge_
+- [ ] Rivedere struttura delle classi
+- [ ] Rimuovere `bool isBias`
