@@ -11,15 +11,14 @@ make
 
 To turn on all types of logs use `cmake -DDEBUG=ON`.
 
-## OLD
-How to compile:
+## How to run tests
+
+After the compilation phase, run
+
 ```bash
-g++ -o main.out main.cpp ./src/ANN.cpp ./src/Connection.cpp ./src/Layer.cpp ./src/Neuron.cpp -I./include -O1
+ctest # -V for verbose output
 ```
-How to execute:
-```bash
-./main.out
-```
+
 
 ## Idee
 Classe Artificial-Neural-Network

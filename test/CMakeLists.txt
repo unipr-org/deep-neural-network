@@ -1,7 +1,7 @@
 enable_testing()
 
 # Source files for tests
-file(GLOB_RECURSE TEST_SOURCES "./*.cpp")
+file(GLOB_RECURSE TEST_SOURCES "../src/dnn/*.cpp" "./*.cpp")
 
 add_executable(test_ann ${TEST_SOURCES})
 
