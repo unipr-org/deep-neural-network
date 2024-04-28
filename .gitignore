@@ -47,3 +47,6 @@
 # clangd
 compile_commands.json
 .clang-format
+
+# MacOs bullshit
+.DS_Store
