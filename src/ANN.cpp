@@ -1,8 +1,8 @@
 #include "ANN.h"
 
-#include <filesystem>
 #include <fstream>
 #include <iostream>
+#include <sys/stat.h>
 #include <vector>
 
 #include "spdlog/spdlog.h"
@@ -56,10 +56,9 @@ void ANN::print() {
 void ANN::printCFG() {
 	std::string folderPath = "./graph";
 	std::string filename = folderPath + "/ann.dot";
-	namespace fs = std::__fs::filesystem;
 
-	if (!fs::exists(folderPath)) {
-		if (!fs::create_directory(folderPath)) {
+	if (mkdir(folderPath.c_str(), S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH) != 0) {
+		if (errno != EEXIST) {
 			spdlog::error("Unable to create directory {}", folderPath);
 			return;
 		}
