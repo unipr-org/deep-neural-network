@@ -1,4 +1,4 @@
-# artificial-neural-network
+# deep-neural-network
 
 ## How to compile
 
@@ -19,19 +19,32 @@ Filenames of tests **must** be compliant to the following patterns:
 | ------------- | -------------- |
 | `test_*.cpp` | `test_*.txt` |
 
-After the compilation phase, inside the build directory run
+and all tests must be in the `test` directory.
+
+After the compilation phase, inside the `build` directory run, you can run all tests with:
 
 ```bash
 ctest # -V for verbose output
 ```
 
-To execute a single test 
+To execute a single test: 
 
 ```bash
 ./test/test_<test_name>
 ```
 
 or refer to the CMake [doc](https://cmake.org/cmake/help/book/mastering-cmake/chapter/Testing%20With%20CMake%20and%20CTest.html#testing-using-ctest).
+
+---
+
+## TODO-List
+
+- [ ] Implementare classi astratte (interfacce)
+- [ ] Utilizzare il pattern _bridge_
+- [ ] Rivedere struttura delle classi
+- [ ] Rimuovere `bool isBias`
+- [ ] Implementare algoritmo per la lettura dei pesi da file di testo (e quindi costruzione della rete)
+
 
 ## Idee
 Classe Artificial-Neural-Network
@@ -66,11 +79,3 @@ for-each layer
 	end for-each neuron
 end for-each layer
 ```
-
-## TODO-List
-
-- [ ] Implementare classi astratte (interfacce)
-- [ ] Utilizzare il pattern _bridge_
-- [ ] Rivedere struttura delle classi
-- [ ] Rimuovere `bool isBias`
-- [ ] Implementare algoritmo per la lettura dei pesi da file di testo (e quindi costruzione della rete)
