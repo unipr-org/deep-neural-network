@@ -11,14 +11,27 @@ make
 
 To turn on all types of logs use `cmake -DDEBUG=ON`.
 
-## How to run tests
+## How to add and run tests
 
-After the compilation phase, run
+Filenames of tests **must** be compliant to the following patterns:
+
+| Source | Input |
+| ------------- | -------------- |
+| `test_*.cpp` | `test_*.txt` |
+
+After the compilation phase, inside the build directory run
 
 ```bash
 ctest # -V for verbose output
 ```
 
+To execute a single test 
+
+```bash
+./test/test_<test_name>
+```
+
+or refer to the CMake [doc](https://cmake.org/cmake/help/book/mastering-cmake/chapter/Testing%20With%20CMake%20and%20CTest.html#testing-using-ctest).
 
 ## Idee
 Classe Artificial-Neural-Network
