@@ -6,7 +6,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)
 
 include_directories(include)
 file(GLOB_RECURSE SOURCES "${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp")
-add_executable(ann ${SOURCES})
+add_executable(dnn ${SOURCES})
 
 
 if(NOT TARGET spdlog)
@@ -14,7 +14,7 @@ if(NOT TARGET spdlog)
     find_package(spdlog REQUIRED)
 endif()
 
-target_link_libraries(ann PRIVATE spdlog::spdlog $<$<BOOL:${MINGW}>:ws2_32>)
+target_link_libraries(dnn PRIVATE spdlog::spdlog $<$<BOOL:${MINGW}>:ws2_32>)
 
 # Used to turn on all types of logs. The default
 # value of the variable DEBUG is OFF and
