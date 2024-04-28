@@ -60,3 +60,4 @@ end for-each layer
 - [ ] Utilizzare il pattern _bridge_
 - [ ] Rivedere struttura delle classi
 - [ ] Rimuovere `bool isBias`
+- [ ] Implementare algoritmo per la lettura dei pesi da file di testo (e quindi costruzione della rete)
