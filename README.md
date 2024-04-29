@@ -39,18 +39,18 @@ or refer to the CMake [doc](https://cmake.org/cmake/help/book/mastering-cmake/ch
 
 ## TODO-List
 
-- [ ] Utilizzo di C++ 11
-- [ ] Implementare classi astratte (interfacce)
-- [ ] Cambiare nomi variabili private (`_`)
-- [ ] Funzioni inline
-- [ ] Rimozione classe Connection
-- [ ] Rimuovere `bool isBias`
-- [ ] Utilizzo namespace e alias
-- [ ] Const correctess
-- [ ] Operator []
-- [ ] Salvataggio stato rete (`json`)
-- [ ] Funzione che popola i pesi
-- [ ] Funzione caricamento pesi
+- [ ] Utilizzo di C++ 11 (Manu e Simo)
+- [ ] Implementare classi astratte (interfacce) (Manu e Simo)
+- [ ] Cambiare nomi variabili private (`_`) (Manu e Simo)
+- [ ] Funzioni inline (Manu e Simo)
+- [ ] Rimozione classe Connection (Manu e Simo)
+- [ ] Rimuovere `bool isBias` (Manu e Simo)
+- [ ] Utilizzo namespace e alias (Manu e Simo)
+- [ ] Const correctess (Manu e Simo)
+- [ ] Operator [] (Manu e Simo)
+- [ ] Salvataggio stato rete (`json`) (Mattia)
+- [ ] Funzione che popola i pesi (Mattia)
+- [ ] Funzione caricamento pesi (Mattia)
 - [ ] Caricamento struttura rete da file
 - [ ] Algoritmo di backpropagation
 - [ ] Algoritmo di testing
