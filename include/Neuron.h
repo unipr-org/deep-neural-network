@@ -1,30 +1,49 @@
 #ifndef NEURON_HH_INCLUSION_GUARD
-#define NEURON_HH_INCLUSION_GUARD 1
+#define NEURON_HH_INCLUSION_GUARD
 
-#include "Connection.h"
-#include <fstream>
 #include <vector>
+#include <functional>
+#include <iostream>
+#include <stddef.h>
+#include "ANN.h"
 
+namespace ANN {
+
+template <typename W_t = weight_t, typename D_t = weight_t>
 class Neuron {
-  private:
-	int neuronIndex;
-	int layerIndex;
-	double outputValue;
-	bool isBias;
+public:
+	using weight_t = W_t;
+	using data_t = D_t;
 
-	double activationFunction(double input);
-	double activationFunctionDerivative(double input);
+	using weight_vector_t = std::vector<weight_t>;
+	using data_vector_t = std::vector<data_t>;
+	
 
-  public:
-	std::vector<Connection> connections;
-	Neuron(int neuronIndex, int layerIndex, int numberOfOutputConnections, bool bias);
+	Neuron() = delete;
+	Neuron(const Neuron&) = delete;
+	Neuron(Neuron&&) = delete;
+	Neuron& operator=(const Neuron&) = delete;
+	Neuron& operator=(Neuron&&) = delete;
 
-	double getOutputValue();
-	void setOutputValue(double value);
+	// Setter
+	inline virtual void setWeights(const weight_list_t&) = 0; 
+	inline virtual void setActivationFunction(const activationFunction_t&) = 0;
+	
+	// Getter
+	inline virtual const weight_list_t& getWeights() const = 0;
+	inline virtual const activationFunction_t& getActivationFunction() const = 0;
 
-	int getIndex() { return neuronIndex; }
-	void print();
-	void printCFG(std::ofstream &);
+	// inline virtual void evaluate(const data_vector_t&, data_t&) const = 0;
+	inline virtual data_t evaluate(const data_vector_t&) const = 0;
+	inline virtual std::ostream& operator<<(std::ostream&) const = 0;
+	inline virtual ~Neuron() {}
 };
+
+template <typename W_t, typename D_t>
+std::ostream&
+operator<<(std::ostream& os, const Neuron<W_t, D_t>& n) {
+	return n.operator<<(os);
+}
+}
 
 #endif // NEURON_HH_INCLUSION_GUARD
