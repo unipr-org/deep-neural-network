@@ -39,11 +39,27 @@ or refer to the CMake [doc](https://cmake.org/cmake/help/book/mastering-cmake/ch
 
 ## TODO-List
 
+- [ ] Utilizzo di C++ 11
 - [ ] Implementare classi astratte (interfacce)
-- [ ] Utilizzare il pattern _bridge_
-- [ ] Rivedere struttura delle classi
+- [ ] Cambiare nomi variabili private (`_`)
+- [ ] Funzioni inline
+- [ ] Rimozione classe Connection
 - [ ] Rimuovere `bool isBias`
-- [ ] Implementare algoritmo per la lettura dei pesi da file di testo (e quindi costruzione della rete)
+- [ ] Utilizzo namespace e alias
+- [ ] Const correctess
+- [ ] Operator []
+- [ ] Salvataggio stato rete (`json`)
+- [ ] Funzione che popola i pesi
+- [ ] Funzione caricamento pesi
+- [ ] Caricamento struttura rete da file
+- [ ] Algoritmo di backpropagation
+- [ ] Algoritmo di testing
+- [ ] Update print `.dot`
+- [ ] Generazione training e test set
+- [ ] Lettura training set
+- [ ] Lettura test set e statistiche
+- [ ] Parallelizzazione (`thread`)
+- [ ] Libreria matematica
 
 
 ## Idee
