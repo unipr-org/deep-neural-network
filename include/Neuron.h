@@ -2,7 +2,7 @@
 #define NEURON_HH_INCLUSION_GUARD
 
 #include "Network.h"
-#include <iostream>
+#include <ostream>
 #include <stddef.h>
 #include <vector>
 
@@ -25,6 +25,8 @@ class Neuron {
 	// Getter
 	inline virtual weight_vector_t &getWeights() = 0;
 	inline virtual const activationFunction_t &getActivationFunction() const = 0;
+
+	inline virtual weight_t &operator[](size_t index) = 0;
 
 	// inline virtual void evaluate(const data_vector_t&, data_t&) const = 0;
 	inline virtual data_t evaluate(const data_vector_t &) const = 0;

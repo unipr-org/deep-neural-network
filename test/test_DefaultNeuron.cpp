@@ -7,7 +7,7 @@
 #include <string>
 #include <vector>
 
-#include "ConcreteNeuron.h"
+#include "DefaultNeuron.h"
 #include "Neuron.h"
 using namespace ANN;
 
@@ -15,8 +15,8 @@ void test_Constructor() {
 	spdlog::info("START test_Constructor");
 
 	std::vector<weight_t> w = {1, 2, 3};
-	ConcreteNeuron cn(w, [=](weight_t x) -> weight_t { return x; });
-	spdlog::info("Created ConcreteNeuron cn");
+	DefaultNeuron cn(w, [=](weight_t x) -> weight_t { return x; });
+	spdlog::info("Created DefaultNeuron cn");
 
 	Neuron<> &n = cn;
 
@@ -70,8 +70,8 @@ void test_Evaluate() {
 	spdlog::info("START test_Evaluate");
 
 	std::vector<weight_t> w = {1.0, 0.5, 1};
-	ConcreteNeuron cn(w, [=](weight_t x) -> weight_t { return x; });
-	spdlog::info("Created ConcreteNeuron cn");
+	DefaultNeuron cn(w, [=](weight_t x) -> weight_t { return x; });
+	spdlog::info("Created DefaultNeuron cn");
 
 	Neuron<> &n = cn;
 

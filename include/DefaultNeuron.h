@@ -1,12 +1,12 @@
-#ifndef CONCRETE_NEURON_HH_INCLUSION_GUARD
-#define CONCRETE_NEURON_HH_INCLUSION_GUARD
+#ifndef DEFAULT_NEURON_HH_INCLUSION_GUARD
+#define DEFAULT_NEURON_HH_INCLUSION_GUARD
 
 #include "Neuron.h"
 #include <numeric>
 
 namespace ANN {
 
-class ConcreteNeuron : public Neuron<> {
+class DefaultNeuron : public Neuron<> {
 	using typename Neuron<>::weight_vector_t;
 	using typename Neuron<>::data_vector_t;
 	using typename Neuron<>::activationFunction_t;
@@ -16,10 +16,10 @@ class ConcreteNeuron : public Neuron<> {
 	activationFunction_t _activationFunction;
 
   public:
-	ConcreteNeuron() = delete;
+	DefaultNeuron() = delete;
 
-	inline ConcreteNeuron(const weight_vector_t &weights,
-						  const activationFunction_t &activationFunction)
+	inline DefaultNeuron(const weight_vector_t &weights,
+						 const activationFunction_t &activationFunction)
 		: _weights(weights), _activationFunction(activationFunction) {}
 
 	// Setter
@@ -40,6 +40,8 @@ class ConcreteNeuron : public Neuron<> {
 			std::inner_product(input.begin(), input.end(), _weights.begin(), data_t(0));
 		return _activationFunction(innerProduct);
 	}
+
+	inline weight_t &operator[](size_t index) override { return _weights[index]; }
 
 	inline std::ostream &operator<<(std::ostream &os) const override {
 		os << "Weights: [\n";
