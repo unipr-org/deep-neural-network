@@ -7,9 +7,9 @@
 #include <stddef.h>
 #include "ANN.h"
 
-namespace ANN {
+namespace ann {
 
-template <typename W_t = weight_t, typename D_t = weight_t>
+template <typename W_t = weight_t, typename D_t = data_t>
 class Neuron {
 public:
 	using weight_t = W_t;
@@ -19,18 +19,17 @@ public:
 	using data_vector_t = std::vector<data_t>;
 	
 
-	Neuron() = delete;
-	Neuron(const Neuron&) = delete;
-	Neuron(Neuron&&) = delete;
-	Neuron& operator=(const Neuron&) = delete;
-	Neuron& operator=(Neuron&&) = delete;
+	// Neuron(const Neuron&) = delete;
+	// Neuron(Neuron&&) = delete;
+	// Neuron& operator=(const Neuron&) = delete;
+	// Neuron& operator=(Neuron&&) = delete;
 
 	// Setter
-	inline virtual void setWeights(const weight_list_t&) = 0; 
+	inline virtual void setWeights(const weight_vector_t&) = 0; 
 	inline virtual void setActivationFunction(const activationFunction_t&) = 0;
 	
 	// Getter
-	inline virtual const weight_list_t& getWeights() const = 0;
+	inline virtual weight_vector_t& getWeights() = 0;
 	inline virtual const activationFunction_t& getActivationFunction() const = 0;
 
 	// inline virtual void evaluate(const data_vector_t&, data_t&) const = 0;
@@ -39,6 +38,11 @@ public:
 	inline virtual ~Neuron() {}
 };
 
+template <typename W_t, typename D_t>
+std::ostream&
+operator<<(std::ostream& os, const Neuron<W_t, D_t>* n) {
+	return n->operator<<(os);
+}
 template <typename W_t, typename D_t>
 std::ostream&
 operator<<(std::ostream& os, const Neuron<W_t, D_t>& n) {

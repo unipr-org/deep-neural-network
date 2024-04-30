@@ -3,7 +3,7 @@
 
 #include <vector>
 #include <functional>
-namespace ANN {
+namespace ann {
 
 using weight_t = long double;
 using data_t = long double;
