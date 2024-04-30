@@ -6,6 +6,7 @@
 #include <stdexcept>
 #include <string>
 #include <vector>
+#include <assert.h>
 
 #include "DefaultNeuron.h"
 #include "Neuron.h"
@@ -93,9 +94,76 @@ void test_Evaluate() {
 	spdlog::info("END test_Evaluate");
 }
 
+
+void test_SquareBracketsOperator() {
+	spdlog::info("START test_SquareBracketsOperator(operator[])");
+	std::vector<weight_t> w = {1.0, 0.5, 1};
+	DefaultNeuron cn(w, [=](weight_t x) -> weight_t { return x; });
+	spdlog::info("Created DefaultNeuron cn");
+
+	Neuron<> &n = cn;
+	assert(n.getWeights().size() == w.size());
+	for (size_t i = 0; i < w.size(); ++i) {
+		assert(w[i] == n[i]);
+	}
+	for (size_t i = 0; i < w.size(); ++i) {
+		w[i] *= 2;
+		n[i] *= 2;
+	}
+	
+	for (size_t i = 0; i < w.size(); ++i) {
+		assert(w[i] == n[i]);
+	}
+
+	spdlog::info("END test_SquareBracketsOperator(operator[])");
+}
+
+void test_SetWeights() {
+	spdlog::info("START test_SetWeights");
+
+	std::vector<weight_t> w = {1.0, 0.5, 1};
+	DefaultNeuron cn(w, [=](weight_t x) -> weight_t { return x; });
+	spdlog::info("Created DefaultNeuron cn");
+
+	Neuron<> &n = cn;
+
+	std::vector<weight_t> newWeights = {2.0, 1.0, 3};
+	cn.setWeights(newWeights);
+
+	for (size_t i = 0; i < newWeights.size(); ++i) {
+		assert(cn[i] == newWeights[i]);
+	}
+
+	spdlog::info("END test_SetWeights");
+}
+
+void test_GetWeights() {
+	spdlog::info("START test_GetWeights");
+
+	std::vector<weight_t> w = {1.0, 0.5, 1};
+	DefaultNeuron cn(w, [=](weight_t x) -> weight_t { return x; });
+	spdlog::info("Created DefaultNeuron cn");
+
+	Neuron<> &n = cn;
+
+	auto& neuronWeights = cn.getWeights();
+	assert(neuronWeights.size() == w.size());
+
+	for (size_t i = 0; i < w.size(); ++i) {
+		assert(neuronWeights[i] == w[i]);
+	}
+
+	neuronWeights[0] = 4;
+	assert(cn[0] == 4);
+	
+	spdlog::info("END test_GetWeights");
+}
+
 int main() {
 	test_Constructor();
 	test_Evaluate();
-
+	test_SquareBracketsOperator();
+	test_SetWeights();
+	test_GetWeights();
 	return 0;
 }
