@@ -1,19 +1,21 @@
 #ifndef DEFAULT_LAYER_INCLUSION_GUARD
 #define DEFAULT_LAYER_INCLUSION_GUARD
 
+#include "DefaultNeuron.h"
 #include "Layer.h"
 #include <cstddef>
 
 namespace ANN {
 
-class DefaultLayer : public Layer<> {
-	using Layer<>::neuron_t;
-	using Layer<>::weight_t;
-	using Layer<>::data_t;
-	using Layer<>::activationFunction_t;
-	using Layer<>::weight_vector_t;
-	using Layer<>::data_vector_t;
-	using Layer<>::neuron_vector_t;
+class DefaultLayer : public Layer<DefaultNeuron> {
+  public:
+	using Layer<DefaultNeuron>::neuron_t;
+	using Layer<DefaultNeuron>::weight_t;
+	using Layer<DefaultNeuron>::data_t;
+	using Layer<DefaultNeuron>::activationFunction_t;
+	using Layer<DefaultNeuron>::weight_vector_t;
+	using Layer<DefaultNeuron>::data_vector_t;
+	using Layer<DefaultNeuron>::neuron_vector_t;
 
   private:
 	neuron_vector_t _neurons;

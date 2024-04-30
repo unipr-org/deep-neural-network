@@ -1,10 +1,11 @@
 #ifndef NEURON_HH_INCLUSION_GUARD
 #define NEURON_HH_INCLUSION_GUARD
 
-#include "Network.h"
 #include <ostream>
 #include <stddef.h>
 #include <vector>
+
+#include "ANN.h"
 
 namespace ANN {
 

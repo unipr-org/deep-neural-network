@@ -7,6 +7,7 @@
 namespace ANN {
 
 class DefaultNeuron : public Neuron<> {
+  public:
 	using typename Neuron<>::weight_vector_t;
 	using typename Neuron<>::data_vector_t;
 	using typename Neuron<>::activationFunction_t;
