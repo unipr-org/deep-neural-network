@@ -28,6 +28,7 @@ class DefaultNetwork : public Network<DefaultLayer> {
 
 	// Getter
 	inline layer_vector_t &getLayers() override { return _layers; }
+	inline const layer_vector_t &getLayers() const override { return _layers; }
 
 	inline size_t getSize() const override { return _layers.size(); }
 
@@ -50,6 +51,7 @@ class DefaultNetwork : public Network<DefaultLayer> {
 		output = std::move(layerOutput);
 	}
 
+	inline const layer_t &operator[](size_t index) const override { return _layers[index]; }
 	inline layer_t &operator[](size_t index) override { return _layers[index]; }
 
 	inline std::ostream &operator<<(std::ostream &os) const override {
