@@ -102,7 +102,11 @@ void test_EvaluateOneLayer() {
 }
 
 int main(int argc, char *argv[]) {
+#ifdef DEBUG
 	spdlog::set_level(spdlog::level::trace);
+#else
+	spdlog::set_level(spdlog::level::info);
+#endif // DEBUG
 
 	test_EvaluateOneLayer();
 	test_EvaluateXOR();
