@@ -23,12 +23,16 @@ template <typename Neuron_t = Neuron<>> class Layer {
 	inline virtual void setNeuron(const neuron_t &neuron, size_t index) = 0;
 
 	// Getter
+	inline virtual const neuron_vector_t &getNeurons() const = 0;
 	inline virtual neuron_vector_t &getNeurons() = 0;
 	inline virtual size_t getSize() const = 0;
 
+
 	inline virtual void evaluateOutput(const data_vector_t &input, data_vector_t &output) const = 0;
 
+
 	inline virtual neuron_t &operator[](size_t index) = 0;
+	inline virtual const neuron_t &operator[](size_t index) const = 0;
 	inline virtual std::ostream &operator<<(std::ostream &) const = 0;
 
 	inline virtual ~Layer() {}
