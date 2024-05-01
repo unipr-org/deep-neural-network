@@ -38,10 +38,22 @@ class DefaultNetwork : public Network<DefaultLayer> {
 		data_vector_t layerOutput(input);
 		layerOutput.push_back(-1); // bias
 
-		for (auto it = _layers.begin(); it != _layers.end(); ++it) {
+		size_t index = 0;
+		std::string msg;
+		msg = "[DefaultNetwork::evaluate(const data_vector_t &)] input: ";
+		msg += input;
+		spdlog::debug(msg);
 
+		for (auto it = _layers.begin(); it != _layers.end(); ++it, ++index) {
 			layerInput = std::move(layerOutput);
-			layerOutput = std::move(data_vector_t((*it).getSize() + 1));
+
+			size_t layer_size = it->getSize();
+			layerOutput = data_vector_t(layer_size + 1);
+			layerOutput[layer_size] = -1; // bias
+
+			msg = "[DefaultNetwork::evaluate(const data_vector_t &)] Layer [" +
+				  std::to_string(index) + "]";
+			spdlog::debug(msg);
 
 			it->evaluate(layerInput, layerOutput);
 		}

@@ -66,7 +66,15 @@ class DefaultNeuron : public Neuron<> {
 			std::inner_product(input.begin(), input.end(), _weights.begin(), data_t(0));
 		data_t result = _activationFunction(innerProduct);
 
-		spdlog::debug("[DefaultNeuron::evaluate(const data_vector_t &)] result:" +
+		std::string msg = "[DefaultNeuron::evaluate(const data_vector_t &)] input: ";
+		msg += input;
+		spdlog::debug(msg);
+
+		msg = "[DefaultNeuron::evaluate(const data_vector_t &)] weights: ";
+		msg += _weights;
+		spdlog::debug(msg);
+
+		spdlog::debug("[DefaultNeuron::evaluate(const data_vector_t &)] result: " +
 					  std::to_string(result));
 		return result;
 	}
@@ -77,13 +85,10 @@ class DefaultNeuron : public Neuron<> {
 	inline std::ostream &operator<<(std::ostream &os) const override {
 		size_t index = 0;
 
-		os << "Weights: {";
-		for (auto i = _weights.begin(); i != _weights.end(); ++i, ++index) {
-			os << *i;
-			if (index != _weights.size() - 1)
-				os << ", ";
-		}
-		os << "}";
+		std::string msg = "weights: ";
+		msg += _weights;
+		os << msg;
+
 		return os;
 	}
 };

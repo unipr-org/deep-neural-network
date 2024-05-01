@@ -1,10 +1,12 @@
 #ifndef ANN_INCLUDE_GUARD
 #define ANN_INCLUDE_GUARD
 
+#include <cmath>
 #include <functional>
 #include <ostream>
 #include <spdlog/common.h>
 #include <spdlog/spdlog.h>
+#include <string>
 #include <vector>
 
 namespace ANN {
@@ -32,13 +34,40 @@ template <typename T> std::string &operator+=(std::string &string, const std::ve
 
 	string += "{";
 	for (auto it = v.begin(); it != v.end(); ++it, ++index) {
-		string += *it;
+		string += std::to_string(*it);
 		if (index != v.size() - 1)
 			string += ", ";
 	}
 	string += "}";
 
 	return string;
+}
+
+inline data_t sigmoid(data_t x) {
+	data_t result = 1 / (1 + exp(-x));
+	return result;
+}
+
+inline data_t sigmoid_d(data_t x) {
+	data_t result = sigmoid(x);
+	return result * (1 - result);
+}
+
+inline data_t heaviside(data_t x) { return (x >= 0) ? 1 : 0; }
+inline data_t identity(data_t x) { return x; }
+
+inline data_t tanh(data_t x) {
+	data_t e1 = exp(x);
+	data_t e2 = exp(-x);
+
+	return (e1 - e2) / (e1 + e2);
+}
+
+inline data_t tanh_d(data_t x) {
+	data_t e1 = exp(x);
+	data_t e2 = exp(-x);
+
+	return (1 - pow(tanh(x), 2));
 }
 
 } // namespace ANN

@@ -4,6 +4,8 @@
 #include "DefaultNeuron.h"
 #include "Layer.h"
 #include <cstddef>
+#include <spdlog/spdlog.h>
+#include <string>
 
 namespace ANN {
 
@@ -36,10 +38,24 @@ class DefaultLayer : public Layer<DefaultNeuron> {
 
 	inline void evaluate(const data_vector_t &input, data_vector_t &output) const override {
 		size_t index = 0;
+
+		std::string msg;
+		msg = "[DefaultLayer::evaluate(const data_vector_t &)] input: ";
+		msg += input;
+		spdlog::debug(msg);
+
 		for (auto it = _neurons.begin(); it != _neurons.end(); ++it, ++index) {
+			msg = "[DefaultLayer::evaluate(const data_vector_t &)] Neuron [" +
+				  std::to_string(index) + "]";
+			spdlog::debug(msg);
+
 			data_t result = it->evaluate(input);
 			output[index] = result;
 		}
+
+		msg = "[DefaultLayer::evaluate(const data_vector_t &)] output: ";
+		msg += output;
+		spdlog::debug(msg);
 	}
 
 	inline neuron_t &operator[](size_t index) override { return _neurons[index]; }
@@ -49,7 +65,7 @@ class DefaultLayer : public Layer<DefaultNeuron> {
 		size_t i = 0;
 
 		for (auto it = _neurons.begin(); it != _neurons.end(); ++it, ++i) {
-			os << "[" << i << "]: " << *it << std::endl;
+			os << "Neuron [" << i << "]: " << *it << std::endl;
 		}
 
 		return os;
