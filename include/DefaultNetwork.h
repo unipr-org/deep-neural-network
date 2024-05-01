@@ -2,7 +2,7 @@
 #define DEFAULT_NETWORK_HH_INCLUSION_GUARD
 
 #include "DefaultLayer.h"
-#include "DefaultNeuron.h"
+#include "Layer.h"
 #include "Network.h"
 #include <cstddef>
 
@@ -18,6 +18,9 @@ class DefaultNetwork : public Network<DefaultLayer> {
   private:
 	layer_vector_t _layers;
 
+  public:
+	DefaultNetwork(const layer_vector_t &layers) : _layers(layers) {}
+
 	// Setter
 	inline void setLayers(const layer_vector_t &layers) override { _layers = layers; }
 
@@ -28,7 +31,7 @@ class DefaultNetwork : public Network<DefaultLayer> {
 
 	inline size_t getSize() const override { return _layers.size(); }
 
-	inline void evaluate(const data_vector_t &input, data_vector_t &output) override {
+	inline void evaluate(const data_vector_t &input, data_vector_t &output) const override {
 
 		data_vector_t layerInput;
 		data_vector_t layerOutput(input);
@@ -42,7 +45,20 @@ class DefaultNetwork : public Network<DefaultLayer> {
 			it->evaluate(layerInput, layerOutput);
 		}
 
+		layerOutput.pop_back();
+
 		output = std::move(layerOutput);
+	}
+
+	inline layer_t &operator[](size_t index) override { return _layers[index]; }
+
+	inline std::ostream &operator<<(std::ostream &os) const override {
+		size_t index = 0;
+		for (const auto &l : _layers) {
+			os << "Layer [" << ++index << "]\n";
+			os << l;
+		}
+		return os;
 	}
 };
 

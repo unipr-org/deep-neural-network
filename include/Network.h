@@ -20,7 +20,7 @@ template <typename Layer_t = Layer<>> class Network {
 	inline virtual layer_vector_t &getLayers() = 0;
 	inline virtual size_t getSize() const = 0;
 
-	inline virtual void evaluate(const data_vector_t &input, data_vector_t &output) = 0;
+	inline virtual void evaluate(const data_vector_t &input, data_vector_t &output) const = 0;
 
 	inline virtual layer_t &operator[](size_t index) = 0;
 	inline virtual std::ostream &operator<<(std::ostream &) const = 0;
