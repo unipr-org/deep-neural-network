@@ -1,6 +1,5 @@
 #include "ANN.h"
 #include "DefaultLayer.h"
-#include "DefaultNetwork.h"
 #include "DefaultNeuron.h"
 #include "spdlog/spdlog.h"
 #include <cassert>
