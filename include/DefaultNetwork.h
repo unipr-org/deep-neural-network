@@ -2,6 +2,7 @@
 #define DEFAULT_NETWORK_HH_INCLUSION_GUARD
 
 #include "DefaultLayer.h"
+#include "DefaultNeuron.h"
 #include "Network.h"
 #include <cstddef>
 
@@ -31,13 +32,14 @@ class DefaultNetwork : public Network<DefaultLayer> {
 
 		data_vector_t layerInput;
 		data_vector_t layerOutput(input);
+		layerOutput.push_back(-1); // bias
 
 		for (auto it = _layers.begin(); it != _layers.end(); ++it) {
 
 			layerInput = std::move(layerOutput);
-			layerOutput = std::move(data_vector_t((*it).getSize()));
+			layerOutput = std::move(data_vector_t((*it).getSize() + 1));
 
-			it->evaluateOutput(layerInput, layerOutput);
+			it->evaluate(layerInput, layerOutput);
 		}
 
 		output = std::move(layerOutput);

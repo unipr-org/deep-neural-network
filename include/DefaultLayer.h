@@ -33,7 +33,7 @@ class DefaultLayer : public Layer<DefaultNeuron> {
 	inline neuron_vector_t &getNeurons() override { return _neurons; }
 	inline size_t getSize() const override { return _neurons.size(); }
 
-	inline void evaluateOutput(const data_vector_t &input, data_vector_t &output) const override {
+	inline void evaluate(const data_vector_t &input, data_vector_t &output) const override {
 		size_t index = 0;
 		for (auto it = _neurons.begin(); it != _neurons.end(); ++it, ++index) {
 			data_t result = it->evaluate(input);

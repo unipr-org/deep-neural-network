@@ -2,6 +2,7 @@
 #define DEFAULT_NEURON_HH_INCLUSION_GUARD
 
 #include "Neuron.h"
+#include <cstddef>
 #include <numeric>
 
 namespace ANN {
@@ -45,10 +46,15 @@ class DefaultNeuron : public Neuron<> {
 	inline weight_t &operator[](size_t index) override { return _weights[index]; }
 
 	inline std::ostream &operator<<(std::ostream &os) const override {
-		os << "Weights: [\n";
-		for (auto i = _weights.begin(); i != _weights.end(); ++i)
-			os << *i << " ";
-		os << "\n]";
+		size_t index = 0;
+
+		os << "Weights: {";
+		for (auto i = _weights.begin(); i != _weights.end(); ++i, ++index) {
+			os << *i;
+			if (index != _weights.size() - 1)
+				os << ", ";
+		}
+		os << "}";
 		return os;
 	}
 };
