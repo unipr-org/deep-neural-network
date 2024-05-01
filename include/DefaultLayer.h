@@ -31,6 +31,7 @@ class DefaultLayer : public Layer<DefaultNeuron> {
 	}
 
 	inline neuron_vector_t &getNeurons() override { return _neurons; }
+	inline const neuron_vector_t &getNeurons() const override { return _neurons; }
 	inline size_t getSize() const override { return _neurons.size(); }
 
 	inline void evaluate(const data_vector_t &input, data_vector_t &output) const override {
@@ -42,6 +43,7 @@ class DefaultLayer : public Layer<DefaultNeuron> {
 	}
 
 	inline neuron_t &operator[](size_t index) override { return _neurons[index]; }
+	inline const neuron_t &operator[](size_t index) const override { return _neurons[index]; }
 
 	inline std::ostream &operator<<(std::ostream &os) const override {
 		size_t i = 0;

@@ -33,6 +33,7 @@ class DefaultNeuron : public Neuron<> {
 
 	// Getter
 	inline weight_vector_t &getWeights() override { return _weights; }
+	inline const weight_vector_t &getWeights() const override { return _weights; }
 	inline const activationFunction_t &getActivationFunction() const override {
 		return _activationFunction;
 	}
@@ -44,6 +45,7 @@ class DefaultNeuron : public Neuron<> {
 	}
 
 	inline weight_t &operator[](size_t index) override { return _weights[index]; }
+	inline const weight_t &operator[](size_t index) const override { return _weights[index]; }
 
 	inline std::ostream &operator<<(std::ostream &os) const override {
 		size_t index = 0;
