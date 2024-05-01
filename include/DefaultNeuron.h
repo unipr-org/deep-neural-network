@@ -4,6 +4,8 @@
 #include "Neuron.h"
 #include <cstddef>
 #include <numeric>
+#include <spdlog/spdlog.h>
+#include <string>
 
 namespace ANN {
 
@@ -22,13 +24,34 @@ class DefaultNeuron : public Neuron<> {
 
 	inline DefaultNeuron(const weight_vector_t &weights,
 						 const activationFunction_t &activationFunction)
-		: _weights(weights), _activationFunction(activationFunction) {}
+		: _weights(weights), _activationFunction(activationFunction) {
+
+		spdlog::debug("[DefaultNeuron::DefaultNeuron(const weight_vector_t &, const "
+					  "activationFunction_t &)] created DefaultNeuron");
+	}
+
+	inline ~DefaultNeuron() { spdlog::debug("[DefaultNeuron::~DefaultNeuron()]"); }
 
 	// Setter
-	inline void setWeights(const weight_vector_t &weights) override { _weights = weights; }
+	inline void setWeights(const weight_vector_t &weights) override {
+		spdlog::debug("[DefaultNeuron::setWeights(const weight_vector_t &)]");
+
+		std::string msg = "old weights:\n";
+		msg += _weights;
+		msg += "\n";
+		spdlog::debug(msg);
+
+		_weights = weights;
+
+		msg = "new weights:\n";
+		msg += _weights;
+		msg += "\n";
+		spdlog::debug(msg);
+	}
 
 	inline void setActivationFunction(const activationFunction_t &activationFunction) override {
 		_activationFunction = activationFunction;
+		spdlog::debug("[DefaultNeuron::setActivationFunction(const activationFunction_t &)]");
 	}
 
 	// Getter
@@ -41,7 +64,11 @@ class DefaultNeuron : public Neuron<> {
 	inline data_t evaluate(const data_vector_t &input) const override {
 		data_t innerProduct =
 			std::inner_product(input.begin(), input.end(), _weights.begin(), data_t(0));
-		return _activationFunction(innerProduct);
+		data_t result = _activationFunction(innerProduct);
+
+		spdlog::debug("[DefaultNeuron::evaluate(const data_vector_t &)] result:" +
+					  std::to_string(result));
+		return result;
 	}
 
 	inline weight_t &operator[](size_t index) override { return _weights[index]; }

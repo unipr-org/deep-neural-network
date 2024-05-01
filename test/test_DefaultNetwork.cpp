@@ -5,6 +5,7 @@
 #include "spdlog/spdlog.h"
 #include <cassert>
 #include <iostream>
+#include <spdlog/common.h>
 #include <vector>
 
 using namespace ANN;
@@ -17,7 +18,7 @@ void test_Evaluate() {
 	vector<weight_t> w = {1, 1, -1};
 	DefaultNeuron dn(w, [=](weight_t x) -> weight_t { return x; });
 
-	DefaultLayer dl(vector<DefaultNeuron>(1, dn));
+	DefaultLayer dl(vector<DefaultNeuron>(1, std::move(dn)));
 	DefaultNetwork d_net(vector<DefaultLayer>(1, dl));
 
 	cout << "Created Network:" << endl;
@@ -42,6 +43,7 @@ void test_Evaluate() {
 }
 
 int main(int argc, char *argv[]) {
+	spdlog::set_level(spdlog::level::trace);
 	test_Evaluate();
 	return 0;
 }
