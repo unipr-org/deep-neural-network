@@ -1,5 +1,5 @@
-#ifndef NETWORK_HH_INCLUSION_GUARD
-#define NETWORK_HH_INCLUSION_GUARD
+#ifndef NETWORK_INCLUDE_GUARD
+#define NETWORK_INCLUDE_GUARD
 
 #include "Layer.h"
 #include <vector>
@@ -37,4 +37,4 @@ template <typename Layer_t> std::ostream &operator<<(std::ostream &os, const Net
 }
 } // namespace ANN
 
-#endif // NETWORK_HH_INCLUSION_GUARD
+#endif // NETWORK_INCLUDE_GUARD

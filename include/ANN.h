@@ -1,5 +1,5 @@
-#ifndef ANN_HH_INCLUSION_GUARD
-#define ANN_HH_INCLUSION_GUARD
+#ifndef ANN_INCLUDE_GUARD
+#define ANN_INCLUDE_GUARD
 
 #include <functional>
 #include <ostream>
@@ -26,4 +26,4 @@ template <typename T> std::ostream &operator<<(std::ostream &os, std::vector<T> 
 }
 } // namespace ANN
 
-#endif // ANN_HH_INCLUSION_GUARD
+#endif // ANN_INCLUDE_GUARD

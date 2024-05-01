@@ -1,5 +1,5 @@
-#ifndef DEFAULT_NEURON_HH_INCLUSION_GUARD
-#define DEFAULT_NEURON_HH_INCLUSION_GUARD
+#ifndef DEFAULT_NEURON_INCLUDE_GUARD
+#define DEFAULT_NEURON_INCLUDE_GUARD
 
 #include "Neuron.h"
 #include <cstddef>
@@ -63,4 +63,4 @@ class DefaultNeuron : public Neuron<> {
 
 } // namespace ANN
 
-#endif // NEURON_HH_INCLUSION_GUARD
+#endif // NEURON_INCLUDE_GUARD

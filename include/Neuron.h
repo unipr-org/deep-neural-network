@@ -1,5 +1,5 @@
-#ifndef NEURON_HH_INCLUSION_GUARD
-#define NEURON_HH_INCLUSION_GUARD
+#ifndef NEURON_INCLUDE_GUARD
+#define NEURON_INCLUDE_GUARD
 
 #include <ostream>
 #include <stddef.h>
@@ -47,4 +47,4 @@ std::ostream &operator<<(std::ostream &os, const Neuron<W_t, D_t> &n) {
 }
 } // namespace ANN
 
-#endif // NEURON_HH_INCLUSION_GUARD
+#endif // NEURON_INCLUDE_GUARD

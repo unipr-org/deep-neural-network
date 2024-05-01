@@ -1,5 +1,5 @@
-#ifndef DEFAULT_LAYER_INCLUSION_GUARD
-#define DEFAULT_LAYER_INCLUSION_GUARD
+#ifndef DEFAULT_LAYER_INCLUDE_GUARD
+#define DEFAULT_LAYER_INCLUDE_GUARD
 
 #include "DefaultNeuron.h"
 #include "Layer.h"
@@ -57,4 +57,4 @@ class DefaultLayer : public Layer<DefaultNeuron> {
 };
 } // namespace ANN
 
-#endif // DEFAULT_LAYER_INCLUSION_GUARD
+#endif // DEFAULT_LAYER_INCLUDE_GUARD

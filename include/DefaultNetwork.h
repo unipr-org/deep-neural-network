@@ -1,5 +1,5 @@
-#ifndef DEFAULT_NETWORK_HH_INCLUSION_GUARD
-#define DEFAULT_NETWORK_HH_INCLUSION_GUARD
+#ifndef DEFAULT_NETWORK_INCLUDE_GUARD
+#define DEFAULT_NETWORK_INCLUDE_GUARD
 
 #include "DefaultLayer.h"
 #include "Layer.h"
@@ -64,4 +64,4 @@ class DefaultNetwork : public Network<DefaultLayer> {
 
 } // namespace ANN
 
-#endif // DEFAULT_NETWORK_HH_INCLUSION_GUARD
+#endif // DEFAULT_NETWORK_INCLUDE_GUARD

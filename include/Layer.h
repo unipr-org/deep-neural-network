@@ -1,5 +1,5 @@
-#ifndef LAYER_HH_INCLUSION_GUARD
-#define LAYER_HH_INCLUSION_GUARD
+#ifndef LAYER_INCLUDE_GUARD
+#define LAYER_INCLUDE_GUARD
 
 #include "Neuron.h"
 #include <cstddef>
@@ -46,4 +46,4 @@ template <typename Neuron_t> std::ostream &operator<<(std::ostream &os, const La
 }
 } // namespace ANN
 
-#endif // LAYER_HH_INCLUSION_GUARD
+#endif // LAYER_INCLUDE_GUARD
