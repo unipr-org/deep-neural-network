@@ -26,3 +26,13 @@ endif()
 
 add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/test")
 enable_testing()
+
+# Doxygen
+find_package(Doxygen REQUIRED)
+add_custom_target(
+    documentation ALL
+    COMMAND ${DOXYGEN_EXECUTABLE} Doxyfile
+    WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+	COMMENT "Generating doc with Doxygen"
+    VERBATIM
+)

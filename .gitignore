@@ -50,3 +50,7 @@ compile_commands.json
 
 # MacOs bullshit
 .DS_Store
+
+# Documentation
+doc/
+

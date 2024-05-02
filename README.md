@@ -35,6 +35,16 @@ To execute a single test:
 
 or refer to the CMake [doc](https://cmake.org/cmake/help/book/mastering-cmake/chapter/Testing%20With%20CMake%20and%20CTest.html#testing-using-ctest).
 
+## Generate documentation
+
+Simply run in the build directory
+
+```bash
+make documentation
+```
+
+and look for the `index.html` inside `doc/html/`.
+
 ---
 
 ## TODO-List
