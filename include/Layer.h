@@ -14,14 +14,14 @@ namespace ANN {
  */
 template <typename Neuron_t = Neuron<>> class Layer {
   public:
-	using neuron_t = Neuron_t; /**< Type definition for neuron type used in the layer. */
-    using weight_t = typename neuron_t::weight_t; /**< Type definition for neuron weight type. */
-    using data_t = typename neuron_t::data_t; /**< Type definition for neuron data type. */
-    using activationFunction_t = typename neuron_t::activationFunction_t; /**< Type definition for neuron activation function type. */
-    using weight_vector_t = typename neuron_t::weight_vector_t; /**< Type definition for vector of weights. */
-    using data_vector_t = typename neuron_t::data_vector_t; /**< Type definition for vector of data. */
+     using neuron_t = Neuron_t; /**< Type definition for neuron type used in the layer. */
+     using weight_t = typename neuron_t::weight_t; /**< Type definition for neuron weight type. */
+     using data_t = typename neuron_t::data_t; /**< Type definition for neuron data type. */
+     using activationFunction_t = typename neuron_t::activationFunction_t; /**< Type definition for neuron activation function type. */
+     using weight_vector_t = typename neuron_t::weight_vector_t; /**< Type definition for vector of weights. */
+     using data_vector_t = typename neuron_t::data_vector_t; /**< Type definition for vector of data. */
 
-    using neuron_vector_t = std::vector<neuron_t>; /**< Type definition for vector of neurons. */
+     using neuron_vector_t = std::vector<neuron_t>; /**< Type definition for vector of neurons. */
 
 
 	// Setter

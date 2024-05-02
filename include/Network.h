@@ -14,12 +14,9 @@ namespace ANN {
 template <typename Layer_t = Layer<>> class Network {
   public:
 	using layer_t = Layer_t; /**< Type definition for layer type used in the network. */
-    using layer_vector_t = std::vector<layer_t>; /**< Type definition for vector of layers. */
-    using data_t = typename layer_t::data_t; /**< Type definition for data type used in the network. */
-    using data_vector_t = typename layer_t::data_vector_t; /**< Type definition for vector of data. */
-
-
-	// Setter
+     using layer_vector_t = std::vector<layer_t>; /**< Type definition for vector of layers. */
+     using data_t = typename layer_t::data_t; /**< Type definition for data type used in the network. */
+     using data_vector_t = typename layer_t::data_vector_t; /**< Type definition for vector of data. */
 	
 	/**
      * @brief Sets the layers of the network.
@@ -35,8 +32,6 @@ template <typename Layer_t = Layer<>> class Network {
      * @param index The index at which to set the layer.
      */
 	inline virtual void setLayer(const layer_t &layer, size_t index) = 0;
-
-	// Getter
 	
 	/**
      * @brief Gets the layers of the network.
@@ -66,6 +61,10 @@ template <typename Layer_t = Layer<>> class Network {
      * @param output The output data vector.
      */
 	inline virtual void evaluate(const data_vector_t &input, data_vector_t &output) const = 0;
+
+     // TODO Move in Loader
+     inline virtual void saveStatus() const = 0;
+     inline virtual void loadStatus() const = 0;
 
 	/**
      * @brief Accesses the layer at the specified index.

@@ -2,6 +2,7 @@
 #include "DefaultLayer.h"
 #include "DefaultNetwork.h"
 #include "DefaultNeuron.h"
+#include "DefaultLoader.h"
 #include "spdlog/spdlog.h"
 #include <cassert>
 #include <iostream>
@@ -101,6 +102,29 @@ void test_EvaluateOneLayer() {
 	info("END test_Evaluate");
 }
 
+void test_SaveStatus() {
+	info("START test_SaveStatus");
+
+	vector<weight_t> w11 = {1, 1, 0.5};
+	vector<weight_t> w12 = {1, 1, 1.5};
+	vector<weight_t> w21 = {1, -1, 1};
+	DefaultNeuron n11(w11, heaviside);
+	DefaultNeuron n12(w12, heaviside);
+	DefaultNeuron n21(w21, heaviside);
+
+	DefaultLayer l1({n11, n12});
+	DefaultLayer l2({n21});
+	DefaultNetwork net({l1, l2});
+
+	net.saveStatus();
+
+	std::cout << net << std::endl;
+
+	net.loadStatus();
+
+	info("END test_SaveStatus");
+}
+
 int main(int argc, char *argv[]) {
 #ifdef DEBUG
 	spdlog::set_level(spdlog::level::trace);
@@ -110,6 +134,7 @@ int main(int argc, char *argv[]) {
 
 	test_EvaluateOneLayer();
 	test_EvaluateXOR();
+	test_SaveStatus();
 
 	return 0;
 }
