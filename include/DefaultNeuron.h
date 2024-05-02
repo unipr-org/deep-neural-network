@@ -20,8 +20,35 @@ class DefaultNeuron : public Neuron<> {
 	activationFunction_t _activationFunction;
 
   public:
-	DefaultNeuron() = delete;
+	/**
+	 * @brief Default constructor for DefaultNeuron.
+	 * 
+	 * This constructor creates a DefaultNeuron object without any parameters.
+	 */
+	inline DefaultNeuron() {
+		spdlog::debug("[DefaultNeuron::DefaultNeuron()] created DefaultNeuron");
+	}
 
+	/**
+	 * @brief Constructor for DefaultNeuron with specified activation function.
+	 * 
+	 * @param activationFunction The activation function to use.
+	 * 
+	 * This constructor creates a DefaultNeuron object with the specified activation function.
+	 */
+	inline DefaultNeuron(const activationFunction_t &activationFunction) {
+		spdlog::debug("[DefaultNeuron::DefaultNeuron(const activationFunction_t &)] "
+						"created DefaultNeuron");
+	}
+
+	/**
+	 * @brief Constructor for DefaultNeuron with specified weights and activation function.
+	 * 
+	 * @param weights The vector of weights to initialize the neuron.
+	 * @param activationFunction The activation function to use.
+	 * 
+	 * This constructor creates a DefaultNeuron object with the specified weights and activation function.
+	 */
 	inline DefaultNeuron(const weight_vector_t &weights,
 						 const activationFunction_t &activationFunction)
 		: _weights(weights), _activationFunction(activationFunction) {

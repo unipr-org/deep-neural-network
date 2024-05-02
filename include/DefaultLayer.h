@@ -23,8 +23,22 @@ class DefaultLayer : public Layer<DefaultNeuron> {
 	neuron_vector_t _neurons;
 
   public:
-	DefaultLayer() = delete;
-	inline DefaultLayer(const neuron_vector_t &neurons) : _neurons(neurons) {}
+
+	/**
+	 * @brief Default constructor for DefaultLayer.
+	 * 
+	 * This constructor creates a DefaultLayer object using the default constructor.
+	 */
+	inline DefaultLayer() = default;
+	
+	/**
+	 * @brief Explicit constructor for DefaultLayer with specified neurons.
+	 * 
+	 * @param neurons The vector of neurons to initialize the layer.
+	 * 
+	 * This constructor creates a DefaultLayer object with the specified neurons.
+	 */
+	inline explicit DefaultLayer(const neuron_vector_t &neurons) : _neurons(neurons) {}
 
 	inline void setNeurons(const neuron_vector_t &neurons) override { _neurons = neurons; }
 

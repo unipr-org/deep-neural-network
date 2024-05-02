@@ -22,7 +22,22 @@ class DefaultNetwork : public Network<DefaultLayer> {
 	layer_vector_t _layers;
 
   public:
-	DefaultNetwork(const layer_vector_t &layers) : _layers(layers) {}
+
+	/**
+	 * @brief Default constructor for DefaultNetwork.
+	 * 
+	 * This constructor creates a DefaultNetwork object using the default constructor.
+	 */
+	inline DefaultNetwork() = default;
+
+	/**
+	 * @brief Explicit constructor for DefaultNetwork with specified layers.
+	 * 
+	 * @param layers The vector of layers to initialize the network.
+	 * 
+	 * This constructor creates a DefaultNetwork object with the specified layers.
+	 */
+	inline explicit DefaultNetwork(const layer_vector_t &layers) : _layers(layers) {}
 
 	inline void setLayers(const layer_vector_t &layers) override { _layers = layers; }
 
