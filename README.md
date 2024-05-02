@@ -49,19 +49,20 @@ and look for the `index.html` inside `doc/html/`.
 
 ## TODO-List
 
-- [x] Utilizzo di C++ 11 (Manu e Simo)
-- [x] Implementare classi astratte (interfacce) (Manu e Simo)
-- [x] Cambiare nomi variabili private (`_`) (Manu e Simo)
-- [x] Funzioni inline (Manu e Simo)
-- [x] Rimozione classe Connection (Manu e Simo)
-- [x] Rimuovere `bool isBias` (Manu e Simo)
-- [x] Utilizzo namespace e alias (Manu e Simo)
-- [x] Const correctess (Manu e Simo)
-- [x] Operator [] (Manu e Simo)
-- [ ] Salvataggio stato rete (`json`) (Mattia)
-- [ ] Funzione che popola i pesi (Mattia)
-- [ ] Funzione caricamento pesi (Mattia)
-- [ ] Caricamento struttura rete da file
+- [x] Utilizzo di C++ 11
+- [x] Implementare classi astratte (interfacce)
+- [x] Cambiare nomi variabili private (`_`)
+- [x] Funzioni inline
+- [x] Rimozione classe Connection
+- [x] Rimuovere `bool isBias`
+- [x] Utilizzo namespace e alias
+- [x] Const correctess 
+- [x] Operator []
+- [x] Salvataggio stato rete
+- [x] Funzione caricamento pesi
+- [x] Caricamento struttura rete da file
+- [ ] Classe Loader
+- [ ] Adattare metodi per il salvataggio e caricamento della rete nella classe Loader
 - [ ] Algoritmo di backpropagation
 - [ ] Algoritmo di testing
 - [ ] Update print `.dot`
