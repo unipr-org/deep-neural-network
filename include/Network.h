@@ -62,9 +62,14 @@ template <typename Layer_t = Layer<>> class Network {
      */
 	inline virtual void evaluate(const data_vector_t &input, data_vector_t &output) const = 0;
 
-     // TODO Move in Loader
+     /**
+      * @brief Gets the status of the neural network.
+      * 
+      * @return A string representing the status of the neural network.
+      * 
+      * This function retrieves the status of the neural network and returns it as a string.
+      */
      inline virtual std::string getStatus() const = 0;
-     // inline virtual void loadStatus() const = 0;
 
 	/**
      * @brief Accesses the layer at the specified index.

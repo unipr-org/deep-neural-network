@@ -5,6 +5,7 @@
 #include "Loader.h"
 #include <cstddef>
 #include <numeric>
+#include <sstream>
 #include <spdlog/spdlog.h>
 #include <string>
 
