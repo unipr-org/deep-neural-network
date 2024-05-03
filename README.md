@@ -61,8 +61,8 @@ and look for the `index.html` inside `doc/html/`.
 - [x] Salvataggio stato rete
 - [x] Funzione caricamento pesi
 - [x] Caricamento struttura rete da file
-- [ ] Classe Loader
-- [ ] Adattare metodi per il salvataggio e caricamento della rete nella classe Loader
+- [x] Classe Loader
+- [x] Adattare metodi per il salvataggio e caricamento della rete nella classe Loader
 - [ ] Algoritmo di backpropagation
 - [ ] Algoritmo di testing
 - [ ] Update print `.dot`
@@ -73,36 +73,41 @@ and look for the `index.html` inside `doc/html/`.
 - [ ] Libreria matematica
 
 
-## Idee
-Classe Artificial-Neural-Network
-- Vettore contenente i layer
-- Costruttore che inizializza la rete: viene passato un vettore che indica il numero di neuroni per ogni layer. Esempio: v = {4, 3, 5, 1}, avremo una ANN che ha 4 input, 2 strati nascosti e 1 solo neurone in uscita (non viene contato il bias qui, quindi andrebbe aggiunto successivamente).
-- Algoritmo di back-propagation
-
-Classe Layer
-- Variabile che indica l'indice del layer nella ANN
-- Vettore contenente i neuroni
-
-Classe Neuron
-- Variabile che indica l'indice del neurone nel Layer
-- Vettore contenente le connessioni con i neuroni dello strato successivo
-- Funzione di attivazione scelta
-- Algoritmo di Feed-forward
-- Funzione di preattivazione
-
-Classe Connection
-- Costruttore che inizializza il peso con valori random
-- Variabile che indica il peso
-- Variabile che tiene traccia del neurone di destinazione
-
+## Feed-forward
 ```
-for-each layer
-	my-layer <- layer(i)
-	for-each neuron
-		my-neuron <- my-layer.neuron(j)
-		for-each connection
-			my-neuron.connection(k) <- update
-		end for-each connection
-	end for-each neuron
-end for-each layer
+function train(network, training-set, passo-appr):
+	vector<vector<data_t>> pre-attivazione 
+	vector<vector<data_t>> output
+	
+	for l in 1 to size(network)
+		output[l].reserve(size(network[l]))
+		pre-attivazione[l].reserve(size(network[l]))
+
+
+	for p in 1..max-epochs:
+		for-each (x, f(x)) in training-set:
+			n.evaluate(x, pre-attivazione, output)
+			
+			current_error <- f(x) - output[size(network)][1]
+			
+			backward_propagate(network, pre-attivazione, current_error, passo-appr)
+			
+			error += |current_error|
+
+		error /= size(traning-set)
+
+		if error < tolleranza:
+			save_status
+			return
+
+function backward_propagate(network, pre-attivazione, current_error, passo-appr):
+	g_derivata <- getDerivative(network.getActivationFunction)
+	vector<vector<data_t>> delta
+	
+	delta[size(network)][1] <- g_derivata(pre-att[size(network)][1] * current_error)
+
+	for k in size(network) - 1 to 1: // scorro layers al contrario
+		for j in 1 to size(network[k]):
+			delta[k][j] <- g_derivata(pre-att[k][j]) * sum(network[k+1][s][j] * delta[k+1][s]) // con s da 1 a size(network[k+1])
+
 ```

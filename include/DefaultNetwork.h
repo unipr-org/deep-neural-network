@@ -80,30 +80,13 @@ class DefaultNetwork : public Network<DefaultLayer> {
 	}
 
 	inline std::string getStatus() const override {
-		// std::string folderPath = "./model";
-		// std::string filename = folderPath + "/status.txt";
 		std::string status = "";
-
-		// if (mkdir(folderPath.c_str(), S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH) != 0) {
-		// 	if (errno != EEXIST) {
-		// 		spdlog::error("Unable to create directory {}", folderPath);
-		// 		throw std::runtime_error("Unable to create directory " + folderPath);
-		// 	}
-		// }
-		
-		// std::ofstream model(filename);
-
-		// if (!model.is_open()) {
-		// 	spdlog::error("Unable to open {}", filename);
-		// 	throw std::runtime_error("Unable to open " + filename);
-		// }
 
 		spdlog::debug("Saving topology");
 		for (const auto &l : _layers) {
-			// model << l.getSize() << " ";
 			status += std::to_string(l.getSize()) + " ";
 		}
-		// model << std::endl;
+
 		status += "\n";
 
 		spdlog::debug("Saving weights");
@@ -114,71 +97,14 @@ class DefaultNetwork : public Network<DefaultLayer> {
 				const auto& weights = n.getWeights();
 
 				for(const auto &w : weights) {
-					// model << w << " ";
 					status += std::to_string(w) + " ";
 				}
-				// model << std::endl;
 				status += "\n";
 			}
 		}
 
-		// spdlog::info("Status saved in {}", filename);
 		return status;
 	}
-
-	// inline void loadStatus() const override {
-	// 	std::string folderPath = "./model";
-	// 	std::string filename = folderPath + "/status.txt";
-
-	// 	std::ifstream model(filename);
-
-	// 	if (!model.is_open()) {
-	// 		spdlog::error("Unable to open {}", filename);
-	// 		return;
-	// 	}
-
-	// 	std::vector<int> topology;
-	// 	layer_vector_t layers;
-	// 	std::string line;
-
-	// 	getline(model, line); // topology
-	// 	std::istringstream iss(line);
-	// 	int value;
-		
-	// 	while (iss >> value) {
-	// 		topology.push_back(value);
-	// 	}
-
-	// 	for(auto item : topology){
-	// 		int c = 0;
-	// 		DefaultLayer::neuron_vector_t neurons;
-	// 		while(c < item){
-	// 			getline(model, line);
-	// 			std::istringstream iss(line);
-	// 			data_t value;
-	// 			DefaultNeuron::weight_vector_t weights;
-				
-	// 			while (iss >> value) {
-	// 				weights.push_back(value);
-	// 			}
-				
-	// 			DefaultNeuron n(weights, heaviside);
-	// 			neurons.push_back(n);
-
-	// 			++c;
-	// 		}
-
-	// 		DefaultLayer l(neurons);
-	// 		layers.push_back(l);
-	// 	}
-
-	// 	model.close();
-
-	// 	DefaultNetwork net(layers);
-	// 	// Net loaded
-
-	// 	std::cout << net << std::endl;
-	// }
 
 	inline const layer_t &operator[](size_t index) const override { return _layers[index]; }
 	inline layer_t &operator[](size_t index) override { return _layers[index]; }
