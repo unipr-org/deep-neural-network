@@ -3,6 +3,7 @@
 #include "DefaultNetwork.h"
 #include "DefaultNeuron.h"
 #include "DefaultLoader.h"
+#include "Loader.h"
 #include "spdlog/spdlog.h"
 #include <cassert>
 #include <iostream>
@@ -14,6 +15,7 @@
 using namespace ANN;
 using namespace std;
 using namespace spdlog;
+using namespace Utils;
 
 void test(data_t expected, data_t value, data_t tolerance = 10E-7) {
 	if (abs(expected - value) > tolerance)
@@ -115,14 +117,23 @@ void test_SaveStatus() {
 	DefaultLayer l1({n11, n12});
 	DefaultLayer l2({n21});
 	DefaultNetwork net({l1, l2});
+	
+	DefaultLoader l;
+	
+	l.saveStatus(net);
 
-	net.saveStatus();
+	std::cout << "net" << std::endl << net << std::endl;
+	
+	Network<DefaultLayer>* net2 = l.loadNetwork();
 
-	std::cout << net << std::endl;
+	auto net3 = l.loadNetwork();
 
-	net.loadStatus();
+	std::cout << "net2" << std::endl << net2 << std::endl;
+	std::cout << "net3" << std::endl << net3 << std::endl;
 
 	info("END test_SaveStatus");
+
+	delete net2;
 }
 
 int main(int argc, char *argv[]) {

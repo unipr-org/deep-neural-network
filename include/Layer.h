@@ -23,8 +23,6 @@ template <typename Neuron_t = Neuron<>> class Layer {
 
      using neuron_vector_t = std::vector<neuron_t>; /**< Type definition for vector of neurons. */
 
-
-	// Setter
 	/**
      * @brief Sets the neurons of the layer.
      *
@@ -40,7 +38,6 @@ template <typename Neuron_t = Neuron<>> class Layer {
      */
 	inline virtual void setNeuron(const neuron_t &neuron, size_t index) = 0;
 
-	// Getter
 	/**
      * @brief Gets the neurons of the layer (const version).
      *
