@@ -26,7 +26,6 @@ class Neuron {
 	using weight_vector_t = std::vector<weight_t>; /**< Type definition for vector of weights. */
 	using data_vector_t = std::vector<data_t>; /**< Type definition for vector of data. */
 
-	// Setter
 	/**
      * @brief Sets the weights of the neuron.
      *
@@ -41,7 +40,6 @@ class Neuron {
      */
 	inline virtual void setActivationFunction(const activationFunction_t &) = 0;
 
-	// Getter
 	/**
      * @brief Gets the weights of the neuron.
      *

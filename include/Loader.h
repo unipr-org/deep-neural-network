@@ -4,14 +4,15 @@
 #include "Network.h"
 #include <vector>
 
-namespace ANN {
-template <typename Network_t = Network<>> class Loader{
+namespace Utils {
+template<typename Network_t = ANN::Network<>> 
+class Loader{
     public:
-        using network_t = Network_t; 
-        
-        inline virtual void saveStatus(Network& net) const = 0;
-        inline virtual Network& loadStatus() const = 0;
+        using network_t = Network_t;
+
+        inline virtual void saveStatus(const network_t& net) const = 0;        
+        inline virtual network_t* loadNetwork(const std::string& path = "./model/status.txt") const = 0;
 };
-} // namespace ANN
+} // namespace Utils
 
 #endif // LOADER_INCLUDE_GUARD

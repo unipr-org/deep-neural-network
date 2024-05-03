@@ -62,8 +62,8 @@ template <typename Layer_t = Layer<>> class Network {
      */
 	inline virtual void evaluate(const data_vector_t &input, data_vector_t &output) const = 0;
 
-     // // TODO Move in Loader
-     // inline virtual void saveStatus() const = 0;
+     // TODO Move in Loader
+     inline virtual std::string getStatus() const = 0;
      // inline virtual void loadStatus() const = 0;
 
 	/**
