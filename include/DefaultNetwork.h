@@ -79,7 +79,8 @@ class DefaultNetwork : public Network<DefaultLayer> {
 		output = std::move(layerOutput);
 	}
 
-	inline void evaluate(const data_vector_t &input, data_vector_t &output, v_data_vector_t &neuronsPreactivations, v_data_vector_t &layersOutputs) const override {
+	inline void evaluate(const data_vector_t &input, data_vector_t &output, v_data_vector_t &neuronsPreactivations, 
+								v_data_vector_t &layersOutputs) const override {
 		data_vector_t layerInput;
 		data_vector_t layerOutput(input);
 		layerOutput.push_back(-1); // bias
