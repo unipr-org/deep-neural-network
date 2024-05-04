@@ -1,11 +1,12 @@
 #include "ANN.h"
 #include "DefaultLayer.h"
+#include "DefaultLoader.h"
 #include "DefaultNetwork.h"
 #include "DefaultNeuron.h"
-#include "DefaultLoader.h"
 #include "Loader.h"
 #include "spdlog/spdlog.h"
 #include <cassert>
+#include <cstddef>
 #include <iostream>
 #include <spdlog/common.h>
 #include <stdexcept>
@@ -117,14 +118,14 @@ void test_SaveStatus() {
 	DefaultLayer l1({n11, n12});
 	DefaultLayer l2({n21});
 	DefaultNetwork net({l1, l2});
-	
+
 	DefaultLoader l;
-	
+
 	l.saveStatus(net);
 
 	std::cout << "net" << std::endl << net << std::endl;
-	
-	Network<DefaultLayer>* net2 = l.loadNetwork();
+
+	Network<DefaultLayer> *net2 = l.loadNetwork();
 
 	auto net3 = l.loadNetwork();
 
@@ -136,6 +137,74 @@ void test_SaveStatus() {
 	delete net2;
 }
 
+void test_NewEvaluateXOR() {
+	info("START test_NewEvaluateTwoLayer");
+
+	vector<weight_t> w11 = {1, 1, 0.5};
+	vector<weight_t> w12 = {1, 1, 1.5};
+	vector<weight_t> w21 = {1, -1, 1};
+	DefaultNeuron n11(w11, heaviside);
+	DefaultNeuron n12(w12, heaviside);
+	DefaultNeuron n21(w21, heaviside);
+
+	DefaultLayer l1({n11, n12});
+	DefaultLayer l2({n21});
+	DefaultNetwork net({l1, l2});
+
+	cout << "Created Network:" << endl;
+	cout << net;
+
+	vector<data_t> input = {0, 0};
+	vector<vector<data_t>> output = vector<vector<data_t>>(net.getSize());
+	vector<vector<data_t>> pre_activations = vector<vector<data_t>>(net.getSize());
+
+	for (int i = 0; i < net.getSize(); ++i) {
+		output[i] = vector<data_t>(net[i].getSize());
+		pre_activations[i] = vector<data_t>(net[i].getSize());
+	}
+
+	info("Starting the evaluation");
+
+	net.evaluate(input, output, pre_activations);
+	cout << "Evaluated output:" << endl;
+	data_t &result = output[net.getSize() - 1][0];
+	std::cout << result << std::endl;
+
+	test(0, result);
+
+	input = {0, 1};
+	net.evaluate(input, output, pre_activations);
+	cout << "Evaluated output:" << endl;
+	std::cout << result << std::endl;
+
+	test(1, result);
+
+	input = {1, 0};
+	net.evaluate(input, output, pre_activations);
+	cout << "Evaluated output:" << endl;
+	std::cout << result << std::endl;
+
+	test(1, result);
+
+	input = {1, 1};
+	net.evaluate(input, output, pre_activations);
+	cout << "Evaluated output:" << endl;
+	std::cout << result << std::endl;
+
+	test(0, result);
+
+	cout << "OUTPUT:" << endl;
+	for (int i = 0; i < net.getSize(); ++i) {
+		cout << "[" << i << "] " << output[i] << endl;
+	}
+	cout << "PRE_ACTIVATION:" << endl;
+	for (int i = 0; i < net.getSize(); ++i) {
+		cout << "[" << i << "] " << pre_activations[i] << endl;
+	}
+
+	info("END test_NewEvaluateTwoLayer");
+}
+
 int main(int argc, char *argv[]) {
 #ifdef DEBUG
 	spdlog::set_level(spdlog::level::trace);
@@ -143,9 +212,9 @@ int main(int argc, char *argv[]) {
 	spdlog::set_level(spdlog::level::info);
 #endif // DEBUG
 
-	test_EvaluateOneLayer();
-	test_EvaluateXOR();
-	test_SaveStatus();
+	/* test_EvaluateOneLayer(); */
+	test_NewEvaluateXOR();
+	/* test_SaveStatus(); */
 
 	return 0;
 }

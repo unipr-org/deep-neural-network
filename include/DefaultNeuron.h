@@ -22,21 +22,21 @@ class DefaultNeuron : public Neuron<> {
   public:
 	/**
 	 * @brief Default constructor for DefaultNeuron.
-	 * 
+	 *
 	 * This constructor creates a DefaultNeuron object without any parameters.
 	 */
 	inline DefaultNeuron() {
 		spdlog::debug("[DefaultNeuron::DefaultNeuron()] created DefaultNeuron");
 	}
 
-
 	/**
 	 * @brief Constructor for DefaultNeuron with specified weights and activation function.
-	 * 
+	 *
 	 * @param weights The vector of weights to initialize the neuron.
 	 * @param activationFunction The activation function to use. Default is sigmoid.
-	 * 
-	 * This constructor creates a DefaultNeuron object with the specified weights and activation function.
+	 *
+	 * This constructor creates a DefaultNeuron object with the specified weights and activation
+	 * function.
 	 */
 	inline DefaultNeuron(const weight_vector_t &weights,
 						 const activationFunction_t &activationFunction = sigmoid)
@@ -94,24 +94,28 @@ class DefaultNeuron : public Neuron<> {
 					  std::to_string(result));
 		return result;
 	}
-	
-	inline data_t evaluate(const data_vector_t &input, data_t& neuronPreactivation) const override {
+
+	inline void evaluate(const data_vector_t &input, data_t &output,
+						 data_t &preActivation) const override {
 		data_t innerProduct =
 			std::inner_product(input.begin(), input.end(), _weights.begin(), data_t(0));
-		neuronPreactivation = innerProduct;
-		data_t result = _activationFunction(innerProduct);
 
-		std::string msg = "[DefaultNeuron::evaluate(const data_vector_t &)] input: ";
+		preActivation = innerProduct;
+		output = _activationFunction(innerProduct);
+
+		std::string msg = "[DefaultNeuron::evaluate(const data_vector_t &input, data_t &output, "
+						  "data_t &preActivation)] input: ";
 		msg += input;
 		spdlog::debug(msg);
 
-		msg = "[DefaultNeuron::evaluate(const data_vector_t &)] weights: ";
+		msg = "[DefaultNeuron::evaluate(const data_vector_t &input, data_t &output, data_t "
+			  "&preActivation)] weights: ";
 		msg += _weights;
 		spdlog::debug(msg);
 
-		spdlog::debug("[DefaultNeuron::evaluate(const data_vector_t &)] result: " +
-					  std::to_string(result));
-		return result;
+		spdlog::debug("[DefaultNeuron::evaluate(const data_vector_t &input, data_t &output, data_t "
+					  "&preActivation)] output: " +
+					  std::to_string(output));
 	}
 
 	inline weight_t &operator[](size_t index) override { return _weights[index]; }

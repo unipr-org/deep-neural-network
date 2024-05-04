@@ -23,19 +23,18 @@ class DefaultLayer : public Layer<DefaultNeuron> {
 	neuron_vector_t _neurons;
 
   public:
-
 	/**
 	 * @brief Default constructor for DefaultLayer.
-	 * 
+	 *
 	 * This constructor creates a DefaultLayer object using the default constructor.
 	 */
 	inline DefaultLayer() = default;
-	
+
 	/**
 	 * @brief Explicit constructor for DefaultLayer with specified neurons.
-	 * 
+	 *
 	 * @param neurons The vector of neurons to initialize the layer.
-	 * 
+	 *
 	 * This constructor creates a DefaultLayer object with the specified neurons.
 	 */
 	inline explicit DefaultLayer(const neuron_vector_t &neurons) : _neurons(neurons) {}
@@ -51,13 +50,13 @@ class DefaultLayer : public Layer<DefaultNeuron> {
 	inline size_t getSize() const override { return _neurons.size(); }
 
 	inline void evaluate(const data_vector_t &input, data_vector_t &output) const override {
-		size_t index = 0;
 
 		std::string msg;
 		msg = "[DefaultLayer::evaluate(const data_vector_t &)] input: ";
 		msg += input;
 		spdlog::debug(msg);
 
+		size_t index = 0;
 		for (auto it = _neurons.begin(); it != _neurons.end(); ++it, ++index) {
 			msg = "[DefaultLayer::evaluate(const data_vector_t &)] Neuron [" +
 				  std::to_string(index) + "]";
@@ -72,30 +71,30 @@ class DefaultLayer : public Layer<DefaultNeuron> {
 		spdlog::debug(msg);
 	}
 
-	inline void evaluate(const data_vector_t &input, data_vector_t &output, data_vector_t &neuronsPreactivations, data_vector_t &layerOutputs) const override {
-		size_t index = 0;
+	inline void evaluate(const data_vector_t &input, data_vector_t &output,
+						 data_vector_t &preActivation) const override {
 
 		std::string msg;
-		msg = "[DefaultLayer::evaluate(const data_vector_t &)] input: ";
+		msg = "[DefaultLayer::evaluate(const data_vector_t &input, data_vector_t &output, "
+			  "data_vector_t &preActivation)] input: ";
 		msg += input;
 		spdlog::debug(msg);
 
+		size_t index = 0;
 		for (auto it = _neurons.begin(); it != _neurons.end(); ++it, ++index) {
-			msg = "[DefaultLayer::evaluate(const data_vector_t &)] Neuron [" +
+			msg = "[DefaultLayer::evaluate(const data_vector_t &input, data_vector_t &output, "
+				  "data_vector_t &preActivation)] Neuron [" +
 				  std::to_string(index) + "]";
 			spdlog::debug(msg);
 
-			data_t result = it->evaluate(input, neuronsPreactivations[index]);
-
-			output[index] = result;
-			layerOutputs[index] = result;
+			it->evaluate(input, output[index], preActivation[index]);
 		}
 
-		msg = "[DefaultLayer::evaluate(const data_vector_t &)] output: ";
+		msg = "[DefaultLayer::evaluate(const data_vector_t &input, data_vector_t &output, "
+			  "data_vector_t &preActivation)] output: ";
 		msg += output;
 		spdlog::debug(msg);
 	}
-
 
 	inline neuron_t &operator[](size_t index) override { return _neurons[index]; }
 	inline const neuron_t &operator[](size_t index) const override { return _neurons[index]; }

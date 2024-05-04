@@ -4,10 +4,10 @@
 #include "DefaultLayer.h"
 #include "Layer.h"
 #include "Network.h"
+#include <algorithm>
 #include <cstddef>
-#include <fstream>
-#include <sys/stat.h>
 #include <iostream>
+#include <sys/stat.h>
 
 namespace ANN {
 
@@ -22,19 +22,18 @@ class DefaultNetwork : public Network<DefaultLayer> {
 	layer_vector_t _layers;
 
   public:
-
 	/**
 	 * @brief Default constructor for DefaultNetwork.
-	 * 
+	 *
 	 * This constructor creates a DefaultNetwork object using the default constructor.
 	 */
 	inline DefaultNetwork() = default;
 
 	/**
 	 * @brief Explicit constructor for DefaultNetwork with specified layers.
-	 * 
+	 *
 	 * @param layers The vector of layers to initialize the network.
-	 * 
+	 *
 	 * This constructor creates a DefaultNetwork object with the specified layers.
 	 */
 	inline explicit DefaultNetwork(const layer_vector_t &layers) : _layers(layers) {}
@@ -79,35 +78,37 @@ class DefaultNetwork : public Network<DefaultLayer> {
 		output = std::move(layerOutput);
 	}
 
-	inline void evaluate(const data_vector_t &input, data_vector_t &output, v_data_vector_t &neuronsPreactivations, 
-								v_data_vector_t &layersOutputs) const override {
-		data_vector_t layerInput;
-		data_vector_t layerOutput(input);
-		layerOutput.push_back(-1); // bias
+	inline void evaluate(const data_vector_t &input, data_vv_t &output,
+						 data_vv_t &preActivation) const override {
 
-		size_t index = 0;
 		std::string msg;
-		msg = "[DefaultNetwork::evaluate(const data_vector_t &)] input: ";
+		msg = "[DefaultNetwork::evaluate(const data_vector_t &input, data_vv_t &output, data_vv_t "
+			  "preActivation)] input: ";
 		msg += input;
 		spdlog::debug(msg);
 
-		for (auto it = _layers.begin(); it != _layers.end(); ++it, ++index) {
-			layerInput = std::move(layerOutput);
+		size_t index = 0;
+		data_vector_t lastInput;
+		data_vector_t lastOutput(input);
+		lastOutput.push_back(-1); // bias
+		for (auto l = _layers.begin(); l != _layers.end(); ++l, ++index) {
 
-			size_t layer_size = it->getSize();
-			layerOutput = data_vector_t(layer_size + 1);
-			layerOutput[layer_size] = -1; // bias
+			lastInput = std::move(lastOutput);
 
-			msg = "[DefaultNetwork::evaluate(const data_vector_t &)] Layer [" +
+			// blanck empty vector to store the output of the new layer.
+			// `size+1` refers to the input value of the bias in the next iteration.
+			size_t layer_size = l->getSize();
+			lastOutput = data_vector_t(layer_size + 1);
+			lastOutput[layer_size] = -1; // bias for the next iteration
+
+			msg = "[DefaultNetwork::evaluate(const data_vector_t &input, data_vv_t &output, "
+				  "data_vv_t preActivation)] Layer [" +
 				  std::to_string(index) + "]";
 			spdlog::debug(msg);
 
-			it->evaluate(layerInput, layerOutput, neuronsPreactivations[index], layersOutputs[index]);
+			l->evaluate(lastInput, output[index], preActivation[index]);
+			std::copy(output[index].begin(), output[index].end(), lastOutput.begin());
 		}
-
-		layerOutput.pop_back();
-
-		output = std::move(layerOutput);
 	}
 
 	inline std::string getStatus() const override {
@@ -122,12 +123,12 @@ class DefaultNetwork : public Network<DefaultLayer> {
 
 		spdlog::debug("Saving weights");
 		for (const auto &l : _layers) {
-			const auto& neurons = l.getNeurons();
+			const auto &neurons = l.getNeurons();
 
-			for(const auto &n : neurons) {
-				const auto& weights = n.getWeights();
+			for (const auto &n : neurons) {
+				const auto &weights = n.getWeights();
 
-				for(const auto &w : weights) {
+				for (const auto &w : weights) {
 					status += std::to_string(w) + " ";
 				}
 				status += "\n";
