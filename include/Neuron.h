@@ -25,6 +25,7 @@ class Neuron {
 
 	using weight_vector_t = std::vector<weight_t>; /**< Type definition for vector of weights. */
 	using data_vector_t = std::vector<data_t>; /**< Type definition for vector of data. */
+     using v_data_vector_t = std::vector<data_vector_t>; /**< Type definition for vector of vectors of data. */
 
 	/**
      * @brief Sets the weights of the neuron.
@@ -85,7 +86,16 @@ class Neuron {
      * @param input The input data vector.
      * @return The result of the neuron's evaluation.
      */
-	inline virtual data_t evaluate(const data_vector_t &) const = 0;
+	inline virtual data_t evaluate(const data_vector_t &data) const = 0;
+	
+     /**
+      * @brief Evaluates the neuron with the given input and calculates the pre-activation value.
+      * 
+      * @param input The input vector to the neuron.
+      * @param neuronPreactivation The pre-activation value of the neuron (output parameter).
+      * @return The output value of the neuron after applying the activation function.
+      */
+     inline virtual data_t evaluate(const data_vector_t &data, data_t& neuronPreactivation) const = 0;
 
 	/**
      * @brief Outputs a textual representation of the neuron.

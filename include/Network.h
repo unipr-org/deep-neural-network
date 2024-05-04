@@ -17,6 +17,7 @@ template <typename Layer_t = Layer<>> class Network {
      using layer_vector_t = std::vector<layer_t>; /**< Type definition for vector of layers. */
      using data_t = typename layer_t::data_t; /**< Type definition for data type used in the network. */
      using data_vector_t = typename layer_t::data_vector_t; /**< Type definition for vector of data. */
+     using v_data_vector_t = typename layer_t::v_data_vector_t; /**< Type definition for vector of vectors of data. */
 	
 	/**
      * @brief Sets the layers of the network.
@@ -61,6 +62,16 @@ template <typename Layer_t = Layer<>> class Network {
      * @param output The output data vector.
      */
 	inline virtual void evaluate(const data_vector_t &input, data_vector_t &output) const = 0;
+	
+     /**
+     * @brief Evaluates the network with the given input data and computes pre-activation values.
+     *
+     * @param input The input data vector.
+     * @param output The output data vector.
+     * @param neuronsPreactivations The pre-activation values of neurons in all layers (output parameter).
+     * @param layersOutputs The output values of neurons in all layers (output parameter).
+     */
+     inline virtual void evaluate(const data_vector_t &input, data_vector_t &output, v_data_vector_t &neuronsPreactivations, v_data_vector_t &layersOutputs) const = 0;
 
      /**
       * @brief Gets the status of the neural network.

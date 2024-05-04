@@ -94,6 +94,25 @@ class DefaultNeuron : public Neuron<> {
 					  std::to_string(result));
 		return result;
 	}
+	
+	inline data_t evaluate(const data_vector_t &input, data_t& neuronPreactivation) const override {
+		data_t innerProduct =
+			std::inner_product(input.begin(), input.end(), _weights.begin(), data_t(0));
+		neuronPreactivation = innerProduct;
+		data_t result = _activationFunction(innerProduct);
+
+		std::string msg = "[DefaultNeuron::evaluate(const data_vector_t &)] input: ";
+		msg += input;
+		spdlog::debug(msg);
+
+		msg = "[DefaultNeuron::evaluate(const data_vector_t &)] weights: ";
+		msg += _weights;
+		spdlog::debug(msg);
+
+		spdlog::debug("[DefaultNeuron::evaluate(const data_vector_t &)] result: " +
+					  std::to_string(result));
+		return result;
+	}
 
 	inline weight_t &operator[](size_t index) override { return _weights[index]; }
 	inline const weight_t &operator[](size_t index) const override { return _weights[index]; }

@@ -20,6 +20,7 @@ template <typename Neuron_t = Neuron<>> class Layer {
      using activationFunction_t = typename neuron_t::activationFunction_t; /**< Type definition for neuron activation function type. */
      using weight_vector_t = typename neuron_t::weight_vector_t; /**< Type definition for vector of weights. */
      using data_vector_t = typename neuron_t::data_vector_t; /**< Type definition for vector of data. */
+     using v_data_vector_t = typename neuron_t::v_data_vector_t; /**< Type definition for vector of vectors of data. */
 
      using neuron_vector_t = std::vector<neuron_t>; /**< Type definition for vector of neurons. */
 
@@ -66,6 +67,17 @@ template <typename Neuron_t = Neuron<>> class Layer {
      * @param output The output data vector.
      */
 	inline virtual void evaluate(const data_vector_t &input, data_vector_t &output) const = 0;
+	
+     
+     /**
+      * @brief Evaluates the layer with the given input and computes the pre-activation values of neurons.
+      * 
+      * @param input The input vector to the layer.
+      * @param output The output vector of the layer (output parameter).
+      * @param neuronsPreactivations The pre-activation values of neurons in the layer (output parameter).
+      * @param layersOutputs The output values of neurons in all layers (output parameter).
+      */
+     inline virtual void evaluate(const data_vector_t &input, data_vector_t &output, data_vector_t &neuronsPreactivations, data_vector_t &layerOutputs) const = 0;
 
 	/**
      * @brief Accesses the neuron at the specified index.

@@ -17,6 +17,16 @@ using network_t = ANN::Network<>;
  */
 using stream_t = std::fstream;
 
+/**
+ * @brief Alias for the type representing the tolerance for convergence during training.
+ */
+using tolerance_t = long double;
+
+/**
+ * @brief Alias for the type representing the step size for training.
+ */
+using step_t = double;
+
 } // namespace Training
 
 

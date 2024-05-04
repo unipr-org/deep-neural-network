@@ -79,6 +79,36 @@ class DefaultNetwork : public Network<DefaultLayer> {
 		output = std::move(layerOutput);
 	}
 
+	inline void evaluate(const data_vector_t &input, data_vector_t &output, v_data_vector_t &neuronsPreactivations, v_data_vector_t &layersOutputs) const override {
+		data_vector_t layerInput;
+		data_vector_t layerOutput(input);
+		layerOutput.push_back(-1); // bias
+
+		size_t index = 0;
+		std::string msg;
+		msg = "[DefaultNetwork::evaluate(const data_vector_t &)] input: ";
+		msg += input;
+		spdlog::debug(msg);
+
+		for (auto it = _layers.begin(); it != _layers.end(); ++it, ++index) {
+			layerInput = std::move(layerOutput);
+
+			size_t layer_size = it->getSize();
+			layerOutput = data_vector_t(layer_size + 1);
+			layerOutput[layer_size] = -1; // bias
+
+			msg = "[DefaultNetwork::evaluate(const data_vector_t &)] Layer [" +
+				  std::to_string(index) + "]";
+			spdlog::debug(msg);
+
+			it->evaluate(layerInput, layerOutput, neuronsPreactivations[index], layersOutputs[index]);
+		}
+
+		layerOutput.pop_back();
+
+		output = std::move(layerOutput);
+	}
+
 	inline std::string getStatus() const override {
 		std::string status = "";
 
