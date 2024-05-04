@@ -13,12 +13,17 @@ namespace Training {
  * @tparam Tolerance_t The type representing the tolerance for convergence during training.
  * @tparam Step_t The type representing the step size for training.
  */
-template <typename Network_t = network_t, typename Stream_t = stream_t, typename Tolerance_t = tolerance_t, typename Step_t = step_t> class Trainer {
-public:
-    
+template <typename Network_t = network_t, typename Stream_t = stream_t, typename Tolerance_t = tolerance_t, typename Step_t = step_t> 
+class Trainer {
+  private:
+    // TODO fare documentazione
+    inline virtual std::vector<std::vector<ANN::data_t>>& backward_propagate(network_t& net, std::vector<std::vector<ANN::data_t>>& preactivation, 
+            const ANN::data_t& current_error, const step_t step) const = 0;
+
+  public:    
     using network_t = Network_t; /**< Type definition for the neural network type. */
     using stream_t = Stream_t; /**< Type definition for the data stream type. */
-     using tolerance_t = Tolerance_t; /**< Type definition for the tolerance type. */
+    using tolerance_t = Tolerance_t; /**< Type definition for the tolerance type. */
     using step_t = Step_t; /**< Type definition for the step size type. */
 
     /**
@@ -31,7 +36,6 @@ public:
      * @param step The step size for training.
      */
     inline virtual void train(network_t& net, stream_t& stream, const tolerance_t tolerance, const size_t epochs, const step_t step) const = 0;
-    
     
     /**
      * @brief Tests the neural network with the provided data stream.
