@@ -1,6 +1,7 @@
 #ifndef DEFAULT_NEURON_INCLUDE_GUARD
 #define DEFAULT_NEURON_INCLUDE_GUARD
 
+#include "ANN.h"
 #include "Neuron.h"
 #include <cstddef>
 #include <numeric>
@@ -25,7 +26,7 @@ class DefaultNeuron : public Neuron<> {
 	 *
 	 * This constructor creates a DefaultNeuron object without any parameters.
 	 */
-	inline DefaultNeuron() {
+	inline DefaultNeuron() : _weights(), _activationFunction(sigmoid) {
 		spdlog::debug("[DefaultNeuron::DefaultNeuron()] created DefaultNeuron");
 	}
 
@@ -129,6 +130,10 @@ class DefaultNeuron : public Neuron<> {
 		os << msg;
 
 		return os;
+	}
+
+	inline void createWeights(size_t weights) {
+		_weights = std::move(std::vector<weight_t>(weights));
 	}
 };
 

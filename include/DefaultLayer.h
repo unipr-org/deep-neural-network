@@ -1,6 +1,7 @@
 #ifndef DEFAULT_LAYER_INCLUDE_GUARD
 #define DEFAULT_LAYER_INCLUDE_GUARD
 
+#include "ANN.h"
 #include "DefaultNeuron.h"
 #include "Layer.h"
 #include <cstddef>
@@ -28,7 +29,7 @@ class DefaultLayer : public Layer<DefaultNeuron> {
 	 *
 	 * This constructor creates a DefaultLayer object using the default constructor.
 	 */
-	inline DefaultLayer() = default;
+	inline DefaultLayer() : _neurons(){};
 
 	/**
 	 * @brief Explicit constructor for DefaultLayer with specified neurons.
@@ -107,6 +108,14 @@ class DefaultLayer : public Layer<DefaultNeuron> {
 		}
 
 		return os;
+	}
+
+	inline void createNeurons(size_t neurons, size_t inputSize) {
+		_neurons = std::move(std::vector<DefaultNeuron>(neurons));
+
+		for (auto &n : _neurons) {
+			n.createWeights(inputSize);
+		}
 	}
 };
 } // namespace ANN

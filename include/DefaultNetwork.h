@@ -1,12 +1,15 @@
 #ifndef DEFAULT_NETWORK_INCLUDE_GUARD
 #define DEFAULT_NETWORK_INCLUDE_GUARD
 
+#include "ANN.h"
 #include "DefaultLayer.h"
+#include "DefaultNeuron.h"
 #include "Layer.h"
 #include "Network.h"
 #include <algorithm>
 #include <cstddef>
 #include <iostream>
+#include <random>
 #include <sys/stat.h>
 
 namespace ANN {
@@ -90,24 +93,25 @@ class DefaultNetwork : public Network<DefaultLayer> {
 		size_t index = 0;
 		data_vector_t lastInput;
 		data_vector_t lastOutput(input);
-		lastOutput.push_back(-1); // bias
+		/* lastOutput.push_back(-1); // bias */
 		for (auto l = _layers.begin(); l != _layers.end(); ++l, ++index) {
 
 			lastInput = std::move(lastOutput);
+			lastInput.push_back(-1);
 
 			// blanck empty vector to store the output of the new layer.
 			// `size+1` refers to the input value of the bias in the next iteration.
 			size_t layer_size = l->getSize();
-			lastOutput = data_vector_t(layer_size + 1);
-			lastOutput[layer_size] = -1; // bias for the next iteration
+			lastOutput = data_vector_t(layer_size);
+			/* lastOutput[layer_size] = -1; // bias for the next iteration */
 
 			msg = "[DefaultNetwork::evaluate(const data_vector_t &input, data_vv_t &output, "
 				  "data_vv_t preActivation)] Layer [" +
 				  std::to_string(index) + "]";
 			spdlog::debug(msg);
 
-			l->evaluate(lastInput, output[index], preActivation[index]);
-			std::copy(output[index].begin(), output[index].end(), lastOutput.begin());
+			l->evaluate(lastInput, lastOutput, preActivation[index]);
+			std::copy(lastOutput.begin(), lastOutput.end(), output[index].begin());
 		}
 	}
 
@@ -148,6 +152,41 @@ class DefaultNetwork : public Network<DefaultLayer> {
 			os << l;
 		}
 		return os;
+	}
+
+	inline data_vv_t &&getEmptyOutputVector() const {
+		data_vv_t *result = new data_vv_t(_layers.size(), data_vector_t());
+
+		for (size_t i = 0; i < _layers.size(); ++i) {
+			(*result)[i] = std::move(data_vector_t(_layers[i].getSize()));
+		}
+
+		return std::move(*result);
+	}
+
+	inline void randomizeWeights() {
+		std::random_device rd;
+		std::mt19937 gen(rd());
+		double min_value = 10e-7;
+		double max_value = -10e-7;
+
+		std::uniform_real_distribution<double> dis(min_value, max_value);
+
+		for (auto &l : _layers)
+			for (auto &n : l.getNeurons())
+				for (auto &w : n.getWeights())
+					w = dis(gen);
+	}
+
+	inline void createLayers(size_t layers, size_t inputSize) {
+		_layers = std::move(std::vector<DefaultLayer>(layers));
+
+		size_t lastOutputSize = inputSize + 1;
+		for (size_t i = 0; i < layers - 1; ++i) {
+			_layers[i].createNeurons(5, lastOutputSize);
+			lastOutputSize = _layers[i].getSize() + 1;
+		}
+		_layers[this->getSize() - 1].createNeurons(1, lastOutputSize);
 	}
 };
 

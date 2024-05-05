@@ -155,13 +155,8 @@ void test_NewEvaluateXOR() {
 	cout << net;
 
 	vector<data_t> input = {0, 0};
-	vector<vector<data_t>> output = vector<vector<data_t>>(net.getSize());
-	vector<vector<data_t>> pre_activations = vector<vector<data_t>>(net.getSize());
-
-	for (int i = 0; i < net.getSize(); ++i) {
-		output[i] = vector<data_t>(net[i].getSize());
-		pre_activations[i] = vector<data_t>(net[i].getSize());
-	}
+	vector<vector<data_t>> output = net.getEmptyOutputVector();
+	vector<vector<data_t>> pre_activations = net.getEmptyOutputVector();
 
 	info("Starting the evaluation");
 
@@ -170,6 +165,14 @@ void test_NewEvaluateXOR() {
 	data_t &result = output[net.getSize() - 1][0];
 	std::cout << result << std::endl;
 
+	cout << "OUTPUT:" << endl;
+	for (int i = 0; i < net.getSize(); ++i) {
+		cout << "[" << i << "] " << output[i] << endl;
+	}
+	cout << "PRE_ACTIVATION:" << endl;
+	for (int i = 0; i < net.getSize(); ++i) {
+		cout << "[" << i << "] " << pre_activations[i] << endl;
+	}
 	test(0, result);
 
 	input = {0, 1};
