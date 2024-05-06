@@ -3,6 +3,7 @@
 
 #include "ANN.h"
 #include "DefaultLayer.h"
+#include "DefaultLoader.h"
 #include "DefaultNetwork.h"
 #include "DefaultNeuron.h"
 #include "Trainer.h"
@@ -33,7 +34,7 @@ class DefaultTrainer : public Trainer<ANN::DefaultNetwork, stream_t, tolerance_t
 	inline void train(network_t &net, stream_t &stream, const tolerance_t tolerance,
 					  const size_t epochs, const step_t step) const override {
 
-		spdlog::debug("[train(network_t &net, stream_t &stream, const tolerance_t "
+		spdlog::info("[train(network_t &net, stream_t &stream, const tolerance_t "
 					  "tolerance, const "
 					  "size_t epochs, const step_t step)] Starting train()");
 
@@ -53,7 +54,6 @@ class DefaultTrainer : public Trainer<ANN::DefaultNetwork, stream_t, tolerance_t
 
 			while (getline(stream, line)) {
 				std::vector<ANN::data_t> vectorTrainingSet; // vettore del training set
-				/* getline(stream, line); // leggo la linea del training training_set */
 				++training_set_size;
 
 				std::istringstream iss(line);
@@ -73,7 +73,6 @@ class DefaultTrainer : public Trainer<ANN::DefaultNetwork, stream_t, tolerance_t
 				// TODO aggiungere un parametro che mi indichi quanti output devo avere
 				y = std::move(vectorTrainingSet.back());
 				vectorTrainingSet.pop_back();
-
 				x = std::move(vectorTrainingSet);
 
 				/* std::cout << "preEvaluate netOutput: "; */
@@ -108,32 +107,40 @@ class DefaultTrainer : public Trainer<ANN::DefaultNetwork, stream_t, tolerance_t
 			// Sposta il cursore di lettura all'inizio del file
 			stream.seekg(0, std::ios::beg);
 
-			spdlog::info("[train(network_t &net, stream_t &stream, const "
-						 "tolerance_t tolerance, "
-						 "const size_t epochs, const step_t step)] epoch: {}",
-						 r);
+			// spdlog::info("[train(network_t &net, stream_t &stream, const "
+			// 			 "tolerance_t tolerance, "
+			// 			 "const size_t epochs, const step_t step)] epoch: {}",
+			// 			 r);
 
 			error /= training_set_size;
-			spdlog::info("[train(network_t &net, stream_t &stream, const "
-						 "tolerance_t tolerance, "
-						 "const size_t epochs, const step_t step)] avg_error: {}",
-						 error);
+			// spdlog::info("[train(network_t &net, stream_t &stream, const "
+			// 			 "tolerance_t tolerance, "
+			// 			 "const size_t epochs, const step_t step)] avg_error: {}",
+			// 			 error);
+
+			spdlog::info("epoch: {}\t error: {}", r, error); 
 
 			if (error < tolerance) {
-				std::string status = net.getStatus(); // !TODO: sistemare
-				std::ofstream model("model/status.txt");
-				model << status;
+				Utils::DefaultLoader l;
+				l.saveStatus(net);
 
-				model.close();
+				spdlog::info("[train(network_t &net, stream_t &stream, const "
+						"tolerance_t tolerance, "
+						"const size_t epochs, const step_t step)] Training ended after {} epochs with an avg error: {}",
+						r, error);
+
 				return;
 			}
 		}
 
-		std::string status = net.getStatus(); // !TODO: sistemare
-		std::ofstream model("model/status.txt");
-		model << status;
+		Utils::DefaultLoader l;
+		l.saveStatus(net);
 
-		model.close();
+		spdlog::info("[train(network_t &net, stream_t &stream, const "
+				"tolerance_t tolerance, "
+				"const size_t epochs, const step_t step)] Training ended after {} epochs with an avg error: {}",
+				epochs, error);
+
 		return;
 	}
 
@@ -168,8 +175,6 @@ class DefaultTrainer : public Trainer<ANN::DefaultNetwork, stream_t, tolerance_t
 
 				data_t sum = 0.0;
 				size_t next_layer_size = net[i + 1].getSize();
-				/* if ((i + 1) == (netSize - 1)) */
-				/*   --next_layer_size; */
 
 				for (size_t s = 0; s < next_layer_size; ++s) {
 					spdlog::debug("delta[{}][{}]: {}", i + 1, s, delta[i + 1][s]);

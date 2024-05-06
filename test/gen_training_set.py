@@ -12,4 +12,4 @@ def generate_training_set(filename, num_samples):
 
 
 # Esempio di utilizzo: genera un training set con 1000 tuple e lo salva in 'training_set.txt'
-generate_training_set('test_DefaultTrainer.txt', 10000)
+generate_training_set('test_DefaultTrainer.txt', 100000)

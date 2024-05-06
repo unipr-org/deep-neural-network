@@ -208,6 +208,19 @@ class DefaultNetwork : public Network<DefaultLayer> {
 		}
 		_layers[this->getSize() - 1].createNeurons(1, lastOutputSize);
 	}
+
+	inline void createLayers(const std::vector<unsigned> &topology, size_t inputSize) {
+		_layers = std::move(std::vector<DefaultLayer>(topology.size()));
+
+		unsigned last = topology.size() - 1;
+		size_t lastOutputSize = inputSize + 1;
+
+		for(unsigned i = 0; i < last; ++i){
+			_layers[i].createNeurons(topology[i], lastOutputSize);
+			lastOutputSize = _layers[i].getSize() + 1;
+		}
+		_layers[this->getSize() - 1].createNeurons(1, lastOutputSize);
+	}
 };
 
 } // namespace ANN

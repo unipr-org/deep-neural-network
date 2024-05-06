@@ -1,5 +1,6 @@
 
 #include "ANN.h"
+#include "DefaultLoader.h"
 #include "DefaultNetwork.h"
 #include "DefaultTrainer.h"
 #include <cstdlib>
@@ -21,19 +22,19 @@ void test_Train() {
 		throw runtime_error("No such file " + training_set_path);
 	}
 
+	vector<unsigned> topology = {4, 6, 5, 3, 1};
+
 	DefaultNetwork net;
-	net.createLayers(7, 3);
+	// net.createLayers(7, 3);
+	net.createLayers(topology, 3);
 	net.randomizeWeights();
 
 	info("Created Network");
 	cout << net;
 
-	vector<data_t> input{1, 1, 1};
-	vector<data_t> output(1);
-
 	Training::DefaultTrainer trainer;
 	debug("Created Trainer");
-	trainer.train(net, training_set, 0.000001, 50, 0.1);
+	trainer.train(net, training_set, 0.000001, 1000, 0.001);
 	training_set.close();
 }
 
