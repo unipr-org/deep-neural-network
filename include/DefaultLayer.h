@@ -27,7 +27,8 @@ class DefaultLayer : public Layer<DefaultNeuron> {
 	/**
 	 * @brief Default constructor for DefaultLayer.
 	 *
-	 * This constructor creates a DefaultLayer object using the default constructor.
+	 * This constructor creates a DefaultLayer object using the default
+	 * constructor.
 	 */
 	inline DefaultLayer() : _neurons(){};
 
@@ -76,14 +77,16 @@ class DefaultLayer : public Layer<DefaultNeuron> {
 						 data_vector_t &preActivation) const override {
 
 		std::string msg;
-		msg = "[DefaultLayer::evaluate(const data_vector_t &input, data_vector_t &output, "
+		msg = "[DefaultLayer::evaluate(const data_vector_t &input, data_vector_t "
+			  "&output, "
 			  "data_vector_t &preActivation)] input: ";
 		msg += input;
 		spdlog::debug(msg);
 
 		size_t index = 0;
 		for (auto it = _neurons.begin(); it != _neurons.end(); ++it, ++index) {
-			msg = "[DefaultLayer::evaluate(const data_vector_t &input, data_vector_t &output, "
+			msg = "[DefaultLayer::evaluate(const data_vector_t &input, data_vector_t "
+				  "&output, "
 				  "data_vector_t &preActivation)] Neuron [" +
 				  std::to_string(index) + "]";
 			spdlog::debug(msg);
@@ -91,7 +94,8 @@ class DefaultLayer : public Layer<DefaultNeuron> {
 			it->evaluate(input, output[index], preActivation[index]);
 		}
 
-		msg = "[DefaultLayer::evaluate(const data_vector_t &input, data_vector_t &output, "
+		msg = "[DefaultLayer::evaluate(const data_vector_t &input, data_vector_t "
+			  "&output, "
 			  "data_vector_t &preActivation)] output: ";
 		msg += output;
 		spdlog::debug(msg);

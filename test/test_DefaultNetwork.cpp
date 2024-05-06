@@ -3,10 +3,8 @@
 #include "DefaultLoader.h"
 #include "DefaultNetwork.h"
 #include "DefaultNeuron.h"
-#include "Loader.h"
 #include "spdlog/spdlog.h"
 #include <cassert>
-#include <cstddef>
 #include <iostream>
 #include <spdlog/common.h>
 #include <stdexcept>
@@ -121,7 +119,7 @@ void test_SaveStatus() {
 
 	DefaultLoader l;
 
-	l.saveStatus(net);
+	/* l.saveStatus(net); */
 
 	std::cout << "net" << std::endl << net << std::endl;
 
@@ -138,7 +136,7 @@ void test_SaveStatus() {
 }
 
 void test_NewEvaluateXOR() {
-	info("START test_NewEvaluateTwoLayer");
+	info("START test_NewEvaluateXOR");
 
 	vector<weight_t> w11 = {1, 1, 0.5};
 	vector<weight_t> w12 = {1, 1, 1.5};
@@ -156,7 +154,7 @@ void test_NewEvaluateXOR() {
 
 	vector<data_t> input = {0, 0};
 	vector<vector<data_t>> output = net.getEmptyOutputVector();
-	vector<vector<data_t>> pre_activations = net.getEmptyOutputVector();
+	vector<vector<data_t>> pre_activations = net.getEmptyPreActivationVector();
 
 	info("Starting the evaluation");
 
@@ -205,7 +203,7 @@ void test_NewEvaluateXOR() {
 		cout << "[" << i << "] " << pre_activations[i] << endl;
 	}
 
-	info("END test_NewEvaluateTwoLayer");
+	info("END test_NewEvaluateXOR");
 }
 
 int main(int argc, char *argv[]) {
@@ -217,7 +215,8 @@ int main(int argc, char *argv[]) {
 
 	/* test_EvaluateOneLayer(); */
 	test_NewEvaluateXOR();
-	/* test_SaveStatus(); */
+	cout << "THE END" << endl;
+	test_SaveStatus();
 
 	return 0;
 }

@@ -8,8 +8,10 @@
 #include "Network.h"
 #include <algorithm>
 #include <cstddef>
+#include <iomanip>
 #include <iostream>
 #include <random>
+#include <sstream>
 #include <sys/stat.h>
 
 namespace ANN {
@@ -28,7 +30,8 @@ class DefaultNetwork : public Network<DefaultLayer> {
 	/**
 	 * @brief Default constructor for DefaultNetwork.
 	 *
-	 * This constructor creates a DefaultNetwork object using the default constructor.
+	 * This constructor creates a DefaultNetwork object using the default
+	 * constructor.
 	 */
 	inline DefaultNetwork() = default;
 
@@ -85,7 +88,8 @@ class DefaultNetwork : public Network<DefaultLayer> {
 						 data_vv_t &preActivation) const override {
 
 		std::string msg;
-		msg = "[DefaultNetwork::evaluate(const data_vector_t &input, data_vv_t &output, data_vv_t "
+		msg = "[DefaultNetwork::evaluate(const data_vector_t &input, data_vv_t "
+			  "&output, data_vv_t "
 			  "preActivation)] input: ";
 		msg += input;
 		spdlog::debug(msg);
@@ -93,24 +97,26 @@ class DefaultNetwork : public Network<DefaultLayer> {
 		size_t index = 0;
 		data_vector_t lastInput;
 		data_vector_t lastOutput(input);
-		/* lastOutput.push_back(-1); // bias */
+		lastOutput.push_back(-1);
+
 		for (auto l = _layers.begin(); l != _layers.end(); ++l, ++index) {
 
 			lastInput = std::move(lastOutput);
-			lastInput.push_back(-1);
 
 			// blanck empty vector to store the output of the new layer.
 			// `size+1` refers to the input value of the bias in the next iteration.
 			size_t layer_size = l->getSize();
-			lastOutput = data_vector_t(layer_size);
-			/* lastOutput[layer_size] = -1; // bias for the next iteration */
+			lastOutput = data_vector_t(layer_size + 1);
+			lastOutput.back() = -1;
 
-			msg = "[DefaultNetwork::evaluate(const data_vector_t &input, data_vv_t &output, "
+			msg = "[DefaultNetwork::evaluate(const data_vector_t &input, data_vv_t "
+				  "&output, "
 				  "data_vv_t preActivation)] Layer [" +
 				  std::to_string(index) + "]";
 			spdlog::debug(msg);
 
 			l->evaluate(lastInput, lastOutput, preActivation[index]);
+
 			std::copy(lastOutput.begin(), lastOutput.end(), output[index].begin());
 		}
 	}
@@ -133,7 +139,11 @@ class DefaultNetwork : public Network<DefaultLayer> {
 				const auto &weights = n.getWeights();
 
 				for (const auto &w : weights) {
-					status += std::to_string(w) + " ";
+					std::stringstream ss;
+					ss << std::setprecision(std::numeric_limits<long double>::max_digits10)
+					   << std::scientific << w;
+					std::string weight_str = ss.str();
+					status += weight_str + " ";
 				}
 				status += "\n";
 			}
@@ -158,6 +168,16 @@ class DefaultNetwork : public Network<DefaultLayer> {
 		data_vv_t *result = new data_vv_t(_layers.size(), data_vector_t());
 
 		for (size_t i = 0; i < _layers.size(); ++i) {
+			(*result)[i] = std::move(data_vector_t(_layers[i].getSize() + 1));
+		}
+
+		return std::move(*result);
+	}
+
+	inline data_vv_t &&getEmptyPreActivationVector() const {
+		data_vv_t *result = new data_vv_t(_layers.size(), data_vector_t());
+
+		for (size_t i = 0; i < _layers.size(); ++i) {
 			(*result)[i] = std::move(data_vector_t(_layers[i].getSize()));
 		}
 
@@ -167,8 +187,8 @@ class DefaultNetwork : public Network<DefaultLayer> {
 	inline void randomizeWeights() {
 		std::random_device rd;
 		std::mt19937 gen(rd());
-		double min_value = 10e-7;
-		double max_value = -10e-7;
+		double min_value = 10e-3;
+		double max_value = -10e-3;
 
 		std::uniform_real_distribution<double> dis(min_value, max_value);
 

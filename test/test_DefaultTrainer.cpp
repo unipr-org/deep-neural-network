@@ -22,7 +22,7 @@ void test_Train() {
 	}
 
 	DefaultNetwork net;
-	net.createLayers(4, 3);
+	net.createLayers(7, 3);
 	net.randomizeWeights();
 
 	info("Created Network");
@@ -33,7 +33,7 @@ void test_Train() {
 
 	Training::DefaultTrainer trainer;
 	debug("Created Trainer");
-	trainer.train(net, training_set, 0.000001, 1000, 0.00001);
+	trainer.train(net, training_set, 0.000001, 50, 0.1);
 	training_set.close();
 }
 

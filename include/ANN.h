@@ -3,9 +3,11 @@
 
 #include <cmath>
 #include <functional>
+#include <iomanip>
 #include <ostream>
 #include <spdlog/common.h>
 #include <spdlog/spdlog.h>
+#include <sstream>
 #include <string>
 #include <vector>
 
@@ -26,7 +28,8 @@ using data_t = long double;
 using data_v_t = std::vector<data_t>;
 
 /**
- * @brief Type definition for the vector of vectors of data used in the neural network.
+ * @brief Type definition for the vector of vectors of data used in the neural
+ * network.
  */
 using data_vv_t = std::vector<data_v_t>;
 
@@ -48,13 +51,17 @@ using activationFunction_t = std::function<data_t(data_t)>;
 template <typename T> std::ostream &operator<<(std::ostream &os, const std::vector<T> &v) {
 	size_t index = 0;
 
-	os << "{";
+	std::stringstream ss;
+	ss << std::setprecision(std::numeric_limits<data_t>::max_digits10) << std::scientific;
+
+	ss << "{";
 	for (auto it = v.begin(); it != v.end(); ++it, ++index) {
-		os << *it;
+		ss << *it;
 		if (index != v.size() - 1)
-			os << ", ";
+			ss << ", ";
 	}
-	os << "}";
+	ss << "}";
+	os << ss.str();
 
 	return os;
 }
@@ -72,13 +79,17 @@ template <typename T> std::ostream &operator<<(std::ostream &os, const std::vect
 template <typename T> std::string &operator+=(std::string &string, const std::vector<T> &v) {
 	size_t index = 0;
 
-	string += "{";
+	std::stringstream ss;
+	ss << std::setprecision(std::numeric_limits<data_t>::max_digits10) << std::scientific;
+
+	ss << "{";
 	for (auto it = v.begin(); it != v.end(); ++it, ++index) {
-		string += std::to_string(*it);
+		ss << *it;
 		if (index != v.size() - 1)
-			string += ", ";
+			ss << ", ";
 	}
-	string += "}";
+	ss << "}";
+	string += ss.str();
 
 	return string;
 }

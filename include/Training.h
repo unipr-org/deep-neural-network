@@ -14,10 +14,11 @@ using network_t = ANN::DefaultNetwork;
 /**
  * @brief Alias for the type of data stream used for training.
  */
-using stream_t = std::ifstream;
+using stream_t = std::istream;
 
 /**
- * @brief Alias for the type representing the tolerance for convergence during training.
+ * @brief Alias for the type representing the tolerance for convergence during
+ * training.
  */
 using tolerance_t = long double;
 
