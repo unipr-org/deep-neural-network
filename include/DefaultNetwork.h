@@ -167,6 +167,7 @@ class DefaultNetwork : public Network<DefaultLayer> {
 		return os;
 	}
 
+	// TODO scrivere documentazione
 	inline data_vv_t &&getEmptyOutputVector() const {
 		data_vv_t *result = new data_vv_t(_layers.size(), data_vector_t());
 
@@ -177,6 +178,7 @@ class DefaultNetwork : public Network<DefaultLayer> {
 		return std::move(*result);
 	}
 
+	// TODO scrivere documentazione
 	inline data_vv_t &&getEmptyPreActivationVector() const {
 		data_vv_t *result = new data_vv_t(_layers.size(), data_vector_t());
 
@@ -187,6 +189,7 @@ class DefaultNetwork : public Network<DefaultLayer> {
 		return std::move(*result);
 	}
 
+	// TODO scrivere documentazione
 	inline void randomizeWeights() {
 		std::random_device rd;
 		std::mt19937 gen(rd());
@@ -201,6 +204,7 @@ class DefaultNetwork : public Network<DefaultLayer> {
 					w = dis(gen);
 	}
 
+	// TODO scrivere documentazione
 	inline void createLayers(size_t layers, size_t inputSize) {
 		_layers = std::move(std::vector<DefaultLayer>(layers));
 
@@ -212,6 +216,7 @@ class DefaultNetwork : public Network<DefaultLayer> {
 		_layers[this->getSize() - 1].createNeurons(1, lastOutputSize);
 	}
 
+	// TODO scrivere documentazione
 	inline void createLayers(const std::vector<unsigned> &topology, size_t inputSize) {
 		_layers = std::move(std::vector<DefaultLayer>(topology.size()));
 

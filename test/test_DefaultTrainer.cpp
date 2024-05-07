@@ -34,7 +34,7 @@ void test_Train() {
 
 	Training::DefaultTrainer trainer;
 	debug("Created Trainer");
-	trainer.train(net, training_set, 0.000001, 1000, 0.001);
+	trainer.train(net, training_set, 0.000001, 1000, 0.000000001);
 	training_set.close();
 }
 

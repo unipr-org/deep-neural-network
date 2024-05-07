@@ -72,6 +72,7 @@ class DefaultNeuron : public Neuron<> {
 
 	inline weight_vector_t &getWeights() override { return _weights; }
 	inline const weight_vector_t &getWeights() const override { return _weights; }
+	inline size_t getSize() const override { return _weights.size(); }
 	inline const activationFunction_t &getActivationFunction() const override {
 		return _activationFunction;
 	}
@@ -131,6 +132,7 @@ class DefaultNeuron : public Neuron<> {
 		return os;
 	}
 
+	// TODO scrivere documentazione
 	inline void createWeights(size_t weights) {
 		_weights = std::move(std::vector<weight_t>(weights));
 	}

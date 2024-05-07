@@ -89,6 +89,7 @@ class DefaultTrainer : public Trainer<ANN::DefaultNetwork, stream_t, tolerance_t
 							  current_error);
 
 				backPropagate(net, vectorTrainingSet, output, preactivation, current_error, step);
+				// backPropagateNormalized(net, vectorTrainingSet, output, preactivation, current_error, step);
 				error += std::abs(current_error);
 
 				spdlog::debug("[train(network_t &net, stream_t &stream, const "
@@ -128,6 +129,7 @@ class DefaultTrainer : public Trainer<ANN::DefaultNetwork, stream_t, tolerance_t
 		return;
 	}
 
+	// TODO scrivere documentazione
 	inline void backPropagate(network_t &net, const data_v_t &input, data_vv_t &output,
 							  data_vv_t &preActivation, const data_t &current_error,
 							  const step_t &step) const {
@@ -189,6 +191,108 @@ class DefaultTrainer : public Trainer<ANN::DefaultNetwork, stream_t, tolerance_t
 			spdlog::debug("Finished layer");
 		}
 
+		spdlog::debug("Exit backPropagate()");
+	}
+
+	// TODO scrivere documentazione
+	inline void backPropagateNormalized(network_t &net, const data_v_t &input, data_vv_t &output,
+										data_vv_t &preActivation, const data_t &current_error,
+										step_t step) const {
+
+		size_t netSize = net.getSize();
+		data_vv_t delta = net.getEmptyPreActivationVector();
+
+		ANN::activationFunction_t g_d = net._activationFunctionDerivative;
+
+		spdlog::debug("preActivation.back()[0]: {}", preActivation.back()[0]);
+		spdlog::debug("current_error: {}", current_error);
+
+		delta.back()[0] = g_d(preActivation.back()[0]) * current_error;
+		spdlog::debug("Evaluated delta for the last layer: {}", delta.back()[0]);
+
+		spdlog::debug("Evaluated weight for the last layer");
+
+		for (int i = netSize - 2; i >= 0; --i) {
+
+			ANN::DefaultLayer &current_layer = net[i];
+			ANN::DefaultLayer &following_layer = net[i + 1];
+
+			for (size_t j = 0; j < current_layer.getSize(); ++j) {
+				data_t &current_elem = delta[i][j];
+
+				// delta[i][j] evaluation
+				current_elem = g_d(preActivation[i][j]);
+				spdlog::debug("preActivation[{}][{}]: {}", i, j, preActivation[i][j]);
+
+				data_t sum = 0.0;
+				size_t next_layer_size = net[i + 1].getSize();
+
+				for (size_t s = 0; s < next_layer_size; ++s) {
+					spdlog::debug("delta[{}][{}]: {}", i + 1, s, delta[i + 1][s]);
+					// std::cout << std::setprecision(std::numeric_limits<data_t>::max_digits10) << std::scientific
+					// 	<< "delta[" << i + 1 << "][" << s << "]: " << delta[i + 1][s] << std::endl;
+					spdlog::debug("[{}][{}]:", s, j);
+					spdlog::debug("following_layer[{}][{}]: {}", s, j, following_layer[s][j]);
+					sum += (following_layer[s][j] * delta[i + 1][s]);
+					spdlog::debug("sum: {}", sum);
+				}
+				current_elem *= sum;
+
+				spdlog::debug("Evaluated delta[{}][{}]: {}", i, j, current_elem);
+			}
+			spdlog::debug("Finished layer");
+		}
+		data_t norm = 0;
+
+		for (size_t i = 1; i < netSize - 1; ++i) {
+			ANN::DefaultLayer &current_layer = net[i];
+			for (size_t j = 0; j < current_layer.getSize(); ++j) {
+				auto &current_neuron = current_layer[j];
+				for (size_t k = 0; k < current_neuron.getSize(); ++k) {
+					norm += pow(delta[i][j] * output[i - 1][k], 2);
+				}
+			}
+		}
+
+		ANN::DefaultLayer &current_layer = net[0];
+		for (size_t j = 0; j < current_layer.getSize(); ++j) {
+			auto &current_neuron = current_layer[j];
+			for (size_t k = 0; k < current_neuron.getSize(); ++k) {
+				norm += pow(delta[0][j] * input[k], 2);
+			}
+		}
+
+		step /= sqrt(norm);
+
+		spdlog::debug("norm: {}, step: {}", norm, step);
+
+		for (size_t k = 0; k < output[netSize - 2].size(); ++k) {
+			net[netSize - 1][0][k] += (step * delta[netSize - 1][0] * output[netSize - 2][k]);
+		}
+		
+		for (int i = netSize - 2; i >= 0; --i) {
+			ANN::DefaultLayer &current_layer = net[i];
+			ANN::DefaultLayer &following_layer = net[i + 1];
+
+			for (size_t j = 0; j < current_layer.getSize(); ++j) {
+				data_t &current_elem = delta[i][j];
+
+				// weight update
+				if (i == 0) {
+					// case first layer (output[-1] is the input)
+					for (size_t k = 0; k <= input.size(); ++k) {
+						current_layer[j][k] += step * current_elem * input[k];
+						spdlog::debug("Evaluated w[{}][{}][{}]: {}", i, j, k, current_layer[j][k]);
+					}
+				} else {
+					// case inner layers
+					for (size_t k = 0; k < output[i - 1].size(); ++k) {
+						current_layer[j][k] += step * current_elem * output[i - 1][k];
+						spdlog::debug("Evaluated w[{}][{}][{}]: {}", i, j, k, current_layer[j][k]);
+					}
+				}
+			}
+		}
 		spdlog::debug("Exit backPropagate()");
 	}
 

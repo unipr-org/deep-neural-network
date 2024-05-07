@@ -57,6 +57,13 @@ class Neuron {
 	inline virtual const weight_vector_t &getWeights() const = 0;
 
 	/**
+	 * @brief Gets the size of the neuron.
+	 *
+	 * @return The number of weights in the neuron.
+	 */
+	inline virtual size_t getSize() const = 0;
+
+	/**
 	 * @brief Gets the activation function of the neuron (const version).
 	 *
 	 * @return Const reference to the activation function.
