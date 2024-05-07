@@ -4,6 +4,7 @@
 #include <cmath>
 #include <functional>
 #include <iomanip>
+#include <map>
 #include <ostream>
 #include <spdlog/common.h>
 #include <spdlog/spdlog.h>
@@ -143,6 +144,11 @@ inline data_t identity(data_t x) { return x; }
  * The tanh function squashes its input into the range (-1, 1).
  */
 inline data_t tanh(data_t x) {
+	if(x > 20)
+		return 1;
+	if(x < -20)
+		return -1;
+	
 	data_t e1 = exp(x);
 	data_t e2 = exp(-x);
 
@@ -156,9 +162,6 @@ inline data_t tanh(data_t x) {
  * @return The derivative of the tanh function at the input value.
  */
 inline data_t tanh_d(data_t x) {
-	data_t e1 = exp(x);
-	data_t e2 = exp(-x);
-
 	return (1 - pow(tanh(x), 2));
 }
 

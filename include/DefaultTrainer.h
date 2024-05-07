@@ -135,7 +135,7 @@ class DefaultTrainer : public Trainer<ANN::DefaultNetwork, stream_t, tolerance_t
 		size_t netSize = net.getSize();
 		data_vv_t delta = net.getEmptyPreActivationVector();
 
-		ANN::activationFunction_t g_d = ANN::sigmoid_d;
+		ANN::activationFunction_t g_d = net._activationFunctionDerivative;
 
 		delta.back()[0] = g_d(preActivation.back()[0]) * current_error;
 		spdlog::debug("Evaluated delta for the last layer: {}", delta.back()[0]);

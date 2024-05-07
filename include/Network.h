@@ -21,6 +21,7 @@ template <typename Layer_t = Layer<>> class Network {
 		typename layer_t::data_vector_t; /**< Type definition for vector of data. */
 	using data_vv_t =
 		typename layer_t::v_data_vector_t; /**< Type definition for vector of vectors of data. */
+	using activationFunction_t = typename layer_t::activationFunction_t; 
 
 	/**
 	 * @brief Sets the layers of the network.

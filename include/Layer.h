@@ -26,7 +26,6 @@ template <typename Neuron_t = Neuron<>> class Layer {
 		typename neuron_t::data_vector_t; /**< Type definition for vector of data. */
 	using v_data_vector_t =
 		typename neuron_t::v_data_vector_t; /**< Type definition for vector of vectors of data. */
-
 	using neuron_vector_t = std::vector<neuron_t>; /**< Type definition for vector of neurons. */
 
 	/**

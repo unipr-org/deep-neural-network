@@ -6,6 +6,7 @@
 #include "DefaultNeuron.h"
 #include "Layer.h"
 #include "Network.h"
+#include "Neuron.h"
 #include <algorithm>
 #include <cstddef>
 #include <iomanip>
@@ -22,6 +23,8 @@ class DefaultNetwork : public Network<DefaultLayer> {
 	using Network<DefaultLayer>::data_vector_t;
 	using Network<DefaultLayer>::layer_t;
 	using Network<DefaultLayer>::layer_vector_t;
+	using Network<DefaultLayer>::activationFunction_t;
+	activationFunction_t _activationFunctionDerivative = ANN::tanh_d;
 
   private:
 	layer_vector_t _layers;
@@ -187,8 +190,8 @@ class DefaultNetwork : public Network<DefaultLayer> {
 	inline void randomizeWeights() {
 		std::random_device rd;
 		std::mt19937 gen(rd());
-		double min_value = 10e-3;
-		double max_value = -10e-3;
+		double min_value = 10e-7;
+		double max_value = -10e-7;
 
 		std::uniform_real_distribution<double> dis(min_value, max_value);
 
