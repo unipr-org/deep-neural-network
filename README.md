@@ -64,13 +64,14 @@ and look for the `index.html` inside `doc/html/`.
 - [x] Classe Loader
 - [x] Adattare metodi per il salvataggio e caricamento della rete nella classe Loader
 - [x] Algoritmo di backpropagation
-- [ ] Algoritmo di testing
-- [ ] Update print `.dot`
 - [x] Generazione training e test set
 - [x] Lettura training set
+- [x] Libreria matematica
+- [x] Sistemare scelta del passo per l'algoritmo di back-prop
+- [x] Ridirigere l'output della compilazione di doxygen da qualche altra parte
 - [ ] Parallelizzazione (`thread`)
-- [ ] Libreria matematica
-- [ ] Sistemare scelta del passo per l'algoritmo di back-prop
+- [ ] Algoritmo di testing
+- [ ] Update print `.dot`
 - [ ] Implementare funzione test e statistiche
 - [ ] Metodo getActivationFunction che restituisce g() e con una mappa otteniamo g’()
-- [ ] Ridirigere l'output della compilazione di doxygen da qualche altra parte
+
