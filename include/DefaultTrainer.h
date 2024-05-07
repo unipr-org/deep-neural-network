@@ -41,59 +41,54 @@ class DefaultTrainer : public Trainer<ANN::DefaultNetwork, stream_t, tolerance_t
 		data_vv_t preactivation = net.getEmptyPreActivationVector();
 		data_vv_t output = net.getEmptyOutputVector();
 
-		std::string line; // linea in cui viene letto il vettore del training
-						  // vectorTrainingSet
+		std::string line;
 		data_t &netOutput = output[net.getSize() - 1][0];
 		size_t netSize = net.getSize();
+		size_t input_size = net[0][0].getWeights().size()-1;
+		
+		std::vector<ANN::data_t> vectorTrainingSet;
+		for(size_t i = 0; i < input_size; ++i) {
+			vectorTrainingSet.push_back(0);
+		}
 
-		// Epoche
 		data_t error = 0.0;
+		// Epochs
 		for (size_t r = 1; r <= epochs; ++r) {
 			error = 0.0;
 			size_t training_set_size = 0;
 
 			while (getline(stream, line)) {
-				std::vector<ANN::data_t> vectorTrainingSet; // vettore del training set
-				++training_set_size;
 
+				++training_set_size;
+				
 				std::istringstream iss(line);
 				data_t value;
 
-				while (iss >> value) {
-					vectorTrainingSet.push_back(value);
+				for(size_t i = 0; i < input_size; ++i) {
+					iss >> value;
+					vectorTrainingSet[i] = value;
 				}
 
-				// Ora che ho il vettore del training set devo dividerlo nel vettore x e
-				// nel vettore f(x)
-				data_v_t x;
 				data_t y;
+				iss >> y;
 
 				// Questa cosa va bene nel caso in cui abbiamo solo un neurone
 				// nell'ultimo layer.
 				// TODO aggiungere un parametro che mi indichi quanti output devo avere
-				y = std::move(vectorTrainingSet.back());
-				vectorTrainingSet.pop_back();
-				x = std::move(vectorTrainingSet);
 
-				/* std::cout << "preEvaluate netOutput: "; */
-				/* std::cout << netOutput << std::endl; */
-				net.evaluate(x, output, preactivation);
+				net.evaluate(vectorTrainingSet, output, preactivation);
 
 				spdlog::debug("[train(network_t &net, stream_t &stream, const "
 							  "tolerance_t tolerance, const "
 							  "size_t epochs, const step_t step)] Evaluated");
 
-				/* std::cout << "netOutput: "; */
-				/* std::cout << netOutput << std::endl; */
 				data_t current_error = y - netOutput;
-				/* std::cout << "current_error: "; */
-				/* std::cout << current_error << std::endl; */
 				spdlog::debug("[train(network_t &net, stream_t &stream, const "
 							  "tolerance_t tolerance, const "
 							  "size_t epochs, const step_t step)] Current error: {}",
 							  current_error);
 
-				backPropagate(net, x, output, preactivation, current_error, step);
+				backPropagate(net, vectorTrainingSet, output, preactivation, current_error, step);
 				error += std::abs(current_error);
 
 				spdlog::debug("[train(network_t &net, stream_t &stream, const "
@@ -101,26 +96,15 @@ class DefaultTrainer : public Trainer<ANN::DefaultNetwork, stream_t, tolerance_t
 							  "size_t epochs, const step_t step)] line: {}",
 							  training_set_size);
 			}
-			// Resetta eventuali errori di lettura
+			// Back to file begin
 			stream.clear();
-
-			// Sposta il cursore di lettura all'inizio del file
 			stream.seekg(0, std::ios::beg);
 
-			// spdlog::info("[train(network_t &net, stream_t &stream, const "
-			// 			 "tolerance_t tolerance, "
-			// 			 "const size_t epochs, const step_t step)] epoch: {}",
-			// 			 r);
-
 			error /= training_set_size;
-			// spdlog::info("[train(network_t &net, stream_t &stream, const "
-			// 			 "tolerance_t tolerance, "
-			// 			 "const size_t epochs, const step_t step)] avg_error: {}",
-			// 			 error);
 
 			spdlog::info("epoch: {}\t error: {}", r, error); 
 
-			if (error < tolerance) {
+			if (error <= tolerance) {
 				Utils::DefaultLoader l;
 				l.saveStatus(net);
 

@@ -22,7 +22,7 @@ void test_Train() {
 		throw runtime_error("No such file " + training_set_path);
 	}
 
-	vector<unsigned> topology = {4, 6, 5, 3, 1};
+	vector<unsigned> topology = {6, 3, 1};
 
 	DefaultNetwork net;
 	// net.createLayers(7, 3);
