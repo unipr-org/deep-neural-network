@@ -167,7 +167,13 @@ class DefaultNetwork : public Network<DefaultLayer> {
 		return os;
 	}
 
-	// TODO scrivere documentazione
+	/**
+	 * @brief Creates and returns an empty output vector for the neural network.
+	 *
+	 * @return An empty output vector for the neural network.
+	 *
+	 * This method creates and returns a vector to store the output values of neurons in all layers of the network.
+	 */
 	inline data_vv_t &&getEmptyOutputVector() const {
 		data_vv_t *result = new data_vv_t(_layers.size(), data_vector_t());
 
@@ -178,7 +184,13 @@ class DefaultNetwork : public Network<DefaultLayer> {
 		return std::move(*result);
 	}
 
-	// TODO scrivere documentazione
+	/**
+	 * @brief Creates and returns an empty pre-activation vector for the neural network.
+	 *
+	 * @return An empty pre-activation vector for the neural network.
+	 *
+	 * This method creates and returns a vector to store the pre-activation values of neurons in all layers of the network.
+	 */
 	inline data_vv_t &&getEmptyPreActivationVector() const {
 		data_vv_t *result = new data_vv_t(_layers.size(), data_vector_t());
 
@@ -189,12 +201,16 @@ class DefaultNetwork : public Network<DefaultLayer> {
 		return std::move(*result);
 	}
 
-	// TODO scrivere documentazione
+	/**
+	 * @brief Randomizes the weights of neurons in the neural network.
+	 *
+	 * This method randomly initializes the weights of neurons in all layers of the network.
+	 */
 	inline void randomizeWeights() {
 		std::random_device rd;
 		std::mt19937 gen(rd());
-		double min_value = 10e-7;
-		double max_value = -10e-7;
+		double min_value = 10e-3;
+		double max_value = -10e-3;
 
 		std::uniform_real_distribution<double> dis(min_value, max_value);
 
@@ -204,19 +220,35 @@ class DefaultNetwork : public Network<DefaultLayer> {
 					w = dis(gen);
 	}
 
-	// TODO scrivere documentazione
-	inline void createLayers(size_t layers, size_t inputSize) {
-		_layers = std::move(std::vector<DefaultLayer>(layers));
+	/**
+	 * @brief Creates n-layers in the neural network with the same size.
+	 *
+	 * @param layers The number of layers to create.
+	 * @param inputSize The size of the input layer.
+	 *
+	 * This method creates layers in the neural network with specified sizes. It initializes neurons in each layer
+	 * with random weights.
+	 */
+	inline void createLayers(size_t n, size_t inputSize) {
+		_layers = std::move(std::vector<DefaultLayer>(n));
 
 		size_t lastOutputSize = inputSize + 1;
-		for (size_t i = 0; i < layers - 1; ++i) {
+		for (size_t i = 0; i < n - 1; ++i) {
 			_layers[i].createNeurons(5, lastOutputSize);
 			lastOutputSize = _layers[i].getSize() + 1;
 		}
 		_layers[this->getSize() - 1].createNeurons(1, lastOutputSize);
 	}
 
-	// TODO scrivere documentazione
+	/**
+	 * @brief Creates layers in the neural network with specified topology.
+	 *
+	 * @param topology A vector specifying the number of neurons in each layer.
+	 * @param inputSize The size of the input layer.
+	 *
+	 * This method creates layers in the neural network with specified topology. It initializes neurons in each layer
+	 * with random weights.
+	 */
 	inline void createLayers(const std::vector<unsigned> &topology, size_t inputSize) {
 		_layers = std::move(std::vector<DefaultLayer>(topology.size()));
 

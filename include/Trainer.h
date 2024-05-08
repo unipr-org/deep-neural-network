@@ -16,12 +16,6 @@ namespace Training {
 template <typename Network_t = network_t, typename Stream_t = stream_t,
 		  typename Tolerance_t = tolerance_t, typename Step_t = step_t>
 class Trainer {
-  private:
-	// TODO fare documentazione
-	/* inline virtual std::vector<std::vector<ANN::data_t>> & */
-	/* backward_propagate(network_t &net, std::vector<std::vector<ANN::data_t>> &preactivation, */
-	/* 				   const ANN::data_t &current_error, const step_t step) const = 0; */
-
   public:
 	using network_t = Network_t;	 /**< Type definition for the neural network type. */
 	using stream_t = Stream_t;		 /**< Type definition for the data stream type. */
@@ -29,24 +23,30 @@ class Trainer {
 	using step_t = Step_t;			 /**< Type definition for the step size type. */
 
 	/**
-	 * @brief Trains the neural network with the provided data stream.
+	 * @brief Trains the neural network using the provided training set.
+	 *
+	 * This method trains the neural network using the provided training set for a specified number of epochs.
 	 *
 	 * @param net The neural network to train.
-	 * @param stream The data stream used for training.
+	 * @param trainingSetStream The stream providing the training set data.
+	 * @param testSetStream The stream providing the test set data.
 	 * @param tolerance The tolerance for convergence during training.
-	 * @param epochs The maximum number of epochs for training.
+	 * @param epochs The number of training epochs.
 	 * @param step The step size for training.
 	 */
-	inline virtual void train(network_t &net, stream_t &stream, const tolerance_t tolerance,
-							  const size_t epochs, const step_t step) const = 0;
+	inline virtual void train(network_t &net, stream_t &trainingSetStream, stream_t &testSetStream, 
+							  const tolerance_t tolerance, const size_t epochs, const step_t step) const = 0;
 
 	/**
-	 * @brief Tests the neural network with the provided data stream.
+	 * @brief Tests the neural network using the provided data stream.
+	 *
+	 * This method evaluates the performance of the neural network using the provided data stream.
 	 *
 	 * @param net The neural network to test.
-	 * @param stream The data stream used for testing.
+	 * @param stream The stream providing the test data.
+	 * @return The accuracy of the neural network on the test data.
 	 */
-	inline virtual void test(network_t &net, stream_t &stream) const = 0;
+	inline virtual ANN::data_t test(network_t &net, stream_t &stream) const = 0;
 };
 } // namespace Training
 

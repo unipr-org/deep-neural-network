@@ -31,12 +31,10 @@ class DefaultTrainer : public Trainer<ANN::DefaultNetwork, stream_t, tolerance_t
 	using data_v_t = typename ANN::data_v_t;
 	using data_vv_t = typename ANN::data_vv_t;
 
-	inline void train(network_t &net, stream_t &stream, const tolerance_t tolerance,
+	inline void train(network_t &net, stream_t &trainingSetStream, stream_t &testSetStream, const tolerance_t tolerance,
 					  const size_t epochs, const step_t step) const override {
 
-		spdlog::info("[train(network_t &net, stream_t &stream, const tolerance_t "
-					  "tolerance, const "
-					  "size_t epochs, const step_t step)] Starting train()");
+		spdlog::info("Starting train()");
 
 		data_vv_t preactivation = net.getEmptyPreActivationVector();
 		data_vv_t output = net.getEmptyOutputVector();
@@ -52,12 +50,14 @@ class DefaultTrainer : public Trainer<ANN::DefaultNetwork, stream_t, tolerance_t
 		}
 
 		data_t error = 0.0;
+		data_t accuracy = 0;
+		
 		// Epochs
 		for (size_t r = 1; r <= epochs; ++r) {
 			error = 0.0;
 			size_t training_set_size = 0;
 
-			while (getline(stream, line)) {
+			while (getline(trainingSetStream, line)) {
 
 				++training_set_size;
 				
@@ -78,41 +78,33 @@ class DefaultTrainer : public Trainer<ANN::DefaultNetwork, stream_t, tolerance_t
 
 				net.evaluate(vectorTrainingSet, output, preactivation);
 
-				spdlog::debug("[train(network_t &net, stream_t &stream, const "
-							  "tolerance_t tolerance, const "
-							  "size_t epochs, const step_t step)] Evaluated");
+				spdlog::debug("[train(...)] Evaluated");
 
 				data_t current_error = y - netOutput;
-				spdlog::debug("[train(network_t &net, stream_t &stream, const "
-							  "tolerance_t tolerance, const "
-							  "size_t epochs, const step_t step)] Current error: {}",
-							  current_error);
+				spdlog::debug("[train(...)] Current error: {}", current_error);
 
 				backPropagate(net, vectorTrainingSet, output, preactivation, current_error, step);
 				// backPropagateNormalized(net, vectorTrainingSet, output, preactivation, current_error, step);
+				
 				error += std::abs(current_error);
 
-				spdlog::debug("[train(network_t &net, stream_t &stream, const "
-							  "tolerance_t tolerance, const "
-							  "size_t epochs, const step_t step)] line: {}",
-							  training_set_size);
+				spdlog::debug("[train(...)] line: {}", training_set_size);
 			}
 			// Back to file begin
-			stream.clear();
-			stream.seekg(0, std::ios::beg);
+			trainingSetStream.clear();
+			trainingSetStream.seekg(0, std::ios::beg);
 
 			error /= training_set_size;
 
-			spdlog::info("epoch: {}\t error: {}", r, error); 
+			accuracy = test(net, testSetStream);
+
+			spdlog::info("epoch: {}\t error: {}\t accuracy: {}", r, error, accuracy); 
 
 			if (error <= tolerance) {
 				Utils::DefaultLoader l;
 				l.saveStatus(net);
 
-				spdlog::info("[train(network_t &net, stream_t &stream, const "
-						"tolerance_t tolerance, "
-						"const size_t epochs, const step_t step)] Training ended after {} epochs with an avg error: {}",
-						r, error);
+				spdlog::info("[train(...)] Training ended after {} epochs with an avg error of {} and an accuracy of {}", r, error, accuracy);
 
 				return;
 			}
@@ -121,15 +113,25 @@ class DefaultTrainer : public Trainer<ANN::DefaultNetwork, stream_t, tolerance_t
 		Utils::DefaultLoader l;
 		l.saveStatus(net);
 
-		spdlog::info("[train(network_t &net, stream_t &stream, const "
-				"tolerance_t tolerance, "
-				"const size_t epochs, const step_t step)] Training ended after {} epochs with an avg error: {}",
-				epochs, error);
+		spdlog::info("[train(...)] Training ended after {} epochs with an avg error: {} and an accuracy of {}", epochs, error, accuracy);
 
 		return;
 	}
 
-	// TODO scrivere documentazione
+	/**
+	 * @brief Performs backpropagation to update the weights of the neural network.
+	 *
+	 * @param net The neural network to update.
+	 * @param input The input data used for forward propagation.
+	 * @param output The output data generated during forward propagation.
+	 * @param preActivation The pre-activation values of the neurons in each layer.
+	 * @param current_error The error value calculated during training.
+	 * @param step The step size or learning rate for weight updates.
+	 *
+	 * This method performs backpropagation to update the weights of the neural network based on the calculated error
+	 * during training. It iterates through each layer in the network, calculating the deltas and updating the weights
+	 * accordingly.
+	 */
 	inline void backPropagate(network_t &net, const data_v_t &input, data_vv_t &output,
 							  data_vv_t &preActivation, const data_t &current_error,
 							  const step_t &step) const {
@@ -194,7 +196,20 @@ class DefaultTrainer : public Trainer<ANN::DefaultNetwork, stream_t, tolerance_t
 		spdlog::debug("Exit backPropagate()");
 	}
 
-	// TODO scrivere documentazione
+	/**
+	 * @brief Performs normalized backpropagation to update the weights of the neural network.
+	 *
+	 * @param net The neural network to update.
+	 * @param input The input data used for forward propagation.
+	 * @param output The output data generated during forward propagation.
+	 * @param preActivation The pre-activation values of the neurons in each layer.
+	 * @param current_error The error value calculated during training.
+	 * @param step The step size or learning rate for weight updates.
+	 *
+	 * This method performs normalized backpropagation to update the weights of the neural network based on the
+	 * calculated error during training. It iterates through each layer in the network, calculating the deltas and
+	 * updating the weights accordingly. Additionally, it normalizes the step size based on the error magnitude.
+	 */
 	inline void backPropagateNormalized(network_t &net, const data_v_t &input, data_vv_t &output,
 										data_vv_t &preActivation, const data_t &current_error,
 										step_t step) const {
@@ -296,7 +311,71 @@ class DefaultTrainer : public Trainer<ANN::DefaultNetwork, stream_t, tolerance_t
 		spdlog::debug("Exit backPropagate()");
 	}
 
-	inline void test(network_t &net, stream_t &stream) const override {}
+	/**
+	 * @brief Tests the neural network on a given data stream and calculates accuracy.
+	 *
+	 * @param net The neural network to test.
+	 * @param stream The input data stream for testing.
+	 * @return The accuracy of the neural network on the test data.
+	 *
+	 * This method tests the neural network on a given data stream and calculates the accuracy of the network's
+	 * predictions. It iterates through the data stream, evaluates the network's output, and compares it with the
+	 * expected output to determine accuracy.
+	 */
+	inline data_t test(network_t &net, stream_t &stream) const override {
+		data_vv_t preactivation = net.getEmptyPreActivationVector();
+		data_vv_t output = net.getEmptyOutputVector();
+
+		std::string line;
+
+		size_t input_size = net[0][0].getWeights().size() - 1;
+		
+		std::vector<ANN::data_t> vectorTrainingSet;
+		for(size_t i = 0; i < input_size; ++i) {
+			vectorTrainingSet.push_back(0);
+		}
+
+		data_t error = 0.0;
+		
+		error = 0.0;
+		size_t test_set_size = 0;
+		size_t correct = 0;
+
+		while (getline(stream, line)) {
+
+			++test_set_size;
+			
+			std::istringstream iss(line);
+			data_t value;
+
+			for(size_t i = 0; i < input_size; ++i) {
+				iss >> value;
+				vectorTrainingSet[i] = value;
+			}
+
+			data_t y;
+			iss >> y;
+
+			// TODO aggiungere un parametro che mi indichi quanti output devo avere
+			net.evaluate(vectorTrainingSet, output, preactivation);
+			
+			data_t result = abs(y - output.back()[0]);
+
+			// spdlog::info("y: {}, output: {}, result: {}", y, output.back()[0], result);
+
+			if(result < 0.01)
+				++correct;
+
+		}
+
+		// Back to file begin
+		stream.clear();
+		stream.seekg(0, std::ios::beg);
+
+		data_t accuracy = correct / test_set_size;
+
+		return accuracy;
+	}
 };
 } // namespace Training
 

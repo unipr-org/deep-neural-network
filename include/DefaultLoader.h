@@ -74,7 +74,7 @@ class DefaultLoader : public Loader<ANN::DefaultNetwork> {
 					weights.push_back(value);
 				}
 
-				ANN::DefaultNeuron n(weights, ANN::heaviside); // TODO remove activation function
+				ANN::DefaultNeuron n(weights);
 				neurons.push_back(n);
 
 				++c;
@@ -87,6 +87,56 @@ class DefaultLoader : public Loader<ANN::DefaultNetwork> {
 		model.close();
 
 		return new ANN::DefaultNetwork(layers);
+	}
+
+	inline void loadNetwork(network_t &net, const std::string &path = "./model/status.txt") override {
+		std::string filename = path;
+
+		std::ifstream model(filename);
+
+		if (!model.is_open()) {
+			spdlog::error("Unable to open {}", filename);
+			throw std::runtime_error("Unable to open " + filename);
+		}
+
+		std::vector<int> topology;
+		ANN::DefaultNetwork::layer_vector_t layers;
+		std::string line;
+
+		getline(model, line); // topology
+		std::istringstream iss(line);
+		int value;
+
+		while (iss >> value) {
+			topology.push_back(value);
+		}
+
+		for (auto item : topology) {
+			int c = 0;
+			ANN::DefaultLayer::neuron_vector_t neurons;
+			while (c < item) {
+				getline(model, line);
+				std::istringstream iss(line);
+				ANN::data_t value;
+				ANN::DefaultNeuron::weight_vector_t weights;
+
+				while (iss >> value) {
+					weights.push_back(value);
+				}
+
+				ANN::DefaultNeuron n(weights);
+				neurons.push_back(n);
+
+				++c;
+			}
+
+			ANN::DefaultLayer l(neurons);
+			layers.push_back(l);
+		}
+
+		model.close();
+
+		net.setLayers(layers);
 	}
 };
 

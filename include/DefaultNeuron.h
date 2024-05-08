@@ -132,7 +132,14 @@ class DefaultNeuron : public Neuron<> {
 		return os;
 	}
 
-	// TODO scrivere documentazione
+	/**
+	 * @brief Creates weights for the neural network.
+	 *
+	 * @param weights The number of weights to create.
+	 *
+	 * This method creates weights for the neural network. It initializes the weights vector with the specified number
+	 * of weights.
+	 */
 	inline void createWeights(size_t weights) {
 		_weights = std::move(std::vector<weight_t>(weights));
 	}

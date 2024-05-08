@@ -28,6 +28,16 @@ template <typename Network_t = ANN::Network<>> class Loader {
 	 * @return A pointer to the loaded neural network.
 	 */
 	inline virtual network_t *loadNetwork(const std::string &path = "./model/status.txt") const = 0;
+
+	/**
+	 * @brief Loads a neural network from the specified path.
+	 *
+	 * @param net The neural network to load.
+	 * @param path The path from which to load the neural network. Default is "./model/status.txt".
+	 *
+	 * This method loads a neural network from the specified file path and assigns it to the given network object.
+	 */
+	inline virtual void loadNetwork(network_t &net, const std::string &path = "./model/status.txt") = 0;
 };
 } // namespace Utils
 
