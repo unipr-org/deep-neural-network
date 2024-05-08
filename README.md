@@ -69,9 +69,9 @@ and look for the `index.html` inside `doc/html/`.
 - [x] Libreria matematica
 - [x] Sistemare scelta del passo per l'algoritmo di back-prop
 - [x] Ridirigere l'output della compilazione di doxygen da qualche altra parte
+- [x] Algoritmo di testing
+- [x] Implementare funzione test e statistiche
 - [ ] Parallelizzazione (`thread`)
-- [ ] Algoritmo di testing
-- [ ] Update print `.dot`
-- [ ] Implementare funzione test e statistiche
 - [ ] Metodo getActivationFunction che restituisce g() e con una mappa otteniamo g’()
+- [ ] Scrivere la documentazione mancante
 
