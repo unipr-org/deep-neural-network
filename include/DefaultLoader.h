@@ -36,7 +36,7 @@ class DefaultLoader : public Loader<ANN::DefaultNetwork> {
 
 		model.close();
 
-		spdlog::info("Status saved in {}", filename);
+		spdlog::debug("Status saved in {}", filename);
 	}
 
 	inline network_t *loadNetwork(const std::string &path = "./model/status.txt") const override {

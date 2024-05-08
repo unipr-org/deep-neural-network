@@ -100,21 +100,16 @@ class DefaultTrainer : public Trainer<ANN::DefaultNetwork, stream_t, tolerance_t
 
 			spdlog::info("epoch: {}\t error: {}\t accuracy: {}", r, error, accuracy); 
 
+			Utils::DefaultLoader l;
+			l.saveStatus(net);
+
 			if (error <= tolerance) {
-				Utils::DefaultLoader l;
-				l.saveStatus(net);
-
 				spdlog::info("[train(...)] Training ended after {} epochs with an avg error of {} and an accuracy of {}", r, error, accuracy);
-
 				return;
 			}
 		}
 
-		Utils::DefaultLoader l;
-		l.saveStatus(net);
-
 		spdlog::info("[train(...)] Training ended after {} epochs with an avg error: {} and an accuracy of {}", epochs, error, accuracy);
-
 		return;
 	}
 

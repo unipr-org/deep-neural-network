@@ -49,7 +49,7 @@ void test_Train() {
 
 	DefaultTrainer trainer;
 
-	trainer.train(net, training_set, test_set, 0.000001, 200, 0.000000001);
+	trainer.train(net, training_set, test_set, 0.000001, 1000, 0.000000001);
 	
 	training_set.close();
 	test_set.close();
