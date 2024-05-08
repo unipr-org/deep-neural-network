@@ -8,6 +8,7 @@ endif()
 # Discover and add all test files
 file(GLOB TEST_CASES "test_*.cpp")
 file(GLOB DNN_SRC "../src/dnn/*.cpp")
+
 foreach(TEST_CASE ${TEST_CASES})
 	get_filename_component(TEST_NAME ${TEST_CASE} NAME_WE)
 
@@ -26,5 +27,16 @@ foreach(TEST_CASE ${TEST_CASES})
 
 endforeach()
 
+set(DATASET_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../dataset)
 
-
+# Controlla se la cartella dataset esiste
+if(EXISTS ${DATASET_DIR})
+    # Se la cartella esiste, copia i file
+    file(GLOB DATASET_FILES "${DATASET_DIR}/*.txt")
+    foreach(DATASET_FILE ${DATASET_FILES})
+        get_filename_component(FILENAME ${DATASET_FILE} NAME)
+        configure_file(${DATASET_FILE} ${CMAKE_CURRENT_BINARY_DIR}/dataset/${FILENAME} COPYONLY)
+    endforeach()
+else()
+    message(WARNING "Dataset directory not found!")
+endif()

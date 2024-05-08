@@ -11,31 +11,48 @@
 using namespace std;
 using namespace spdlog;
 using namespace ANN;
+using namespace Training;
+using namespace Utils;
 
 void test_Train() {
 	info("START test_NewEvaluateTwoLayer");
-	string training_set_path = "./test/test_DefaultTrainer.txt";
-
+	
+	string training_set_path = "./test/dataset/training_set.txt";
 	ifstream training_set(training_set_path);
 	if (!training_set) {
 		error("No such file " + training_set_path);
 		throw runtime_error("No such file " + training_set_path);
 	}
 
-	vector<unsigned> topology = {6, 3, 1};
+	string test_set_path = "./test/dataset/test_set.txt";
+	ifstream test_set(test_set_path);
+	if (!test_set) {
+		error("No such file " + test_set_path);
+		throw runtime_error("No such file " + test_set_path);
+	}
 
 	DefaultNetwork net;
-	// net.createLayers(7, 3);
-	net.createLayers(topology, 3);
-	net.randomizeWeights();
+	DefaultLoader l;
 
-	info("Created Network");
-	cout << net;
+	ifstream model("./model/status.txt");
+	if (!model) {
+		vector<unsigned> topology = {3, 3, 1};
+		net.createLayers(topology, 3);
+		net.randomizeWeights();
+		info("Created Network");
+	} else {
+		l.loadNetwork(net);
+		info("Loaded Network");
+		model.close();
+	}	
+	cout << net << endl;
 
-	Training::DefaultTrainer trainer;
-	debug("Created Trainer");
-	trainer.train(net, training_set, 0.000001, 1000, 0.000000001);
+	DefaultTrainer trainer;
+
+	trainer.train(net, training_set, test_set, 0.000001, 200, 0.000000001);
+	
 	training_set.close();
+	test_set.close();
 }
 
 int main(int argc, char *argv[]) {
