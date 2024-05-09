@@ -1,7 +1,6 @@
-# deep-neural-network
+# Deep Neural Network
 
 ## How to compile
-
 ```bash
 mkdir build
 cd build
@@ -12,7 +11,6 @@ make
 To turn on all types of logs use `cmake -DDEBUG=ON`.
 
 ## How to add and run tests
-
 Filenames of tests **must** be compliant to the following patterns:
 
 | Source | Input |
@@ -34,6 +32,14 @@ To execute a single test:
 ```
 
 or refer to the CMake [doc](https://cmake.org/cmake/help/book/mastering-cmake/chapter/Testing%20With%20CMake%20and%20CTest.html#testing-using-ctest).
+
+### Example test
+You can run an example test with:
+```bash
+./test/test_DefaultTrainer
+```
+
+---
 
 ## Generate documentation
 
