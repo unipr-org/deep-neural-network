@@ -209,8 +209,8 @@ class DefaultNetwork : public Network<DefaultLayer> {
 	inline void randomizeWeights() {
 		std::random_device rd;
 		std::mt19937 gen(rd());
-		double min_value = 10e-3;
-		double max_value = -10e-3;
+		double min_value = 10e-1;
+		double max_value = -10e-1;
 
 		std::uniform_real_distribution<double> dis(min_value, max_value);
 
