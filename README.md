@@ -1,6 +1,12 @@
 # Deep Neural Network
 
+## Dependencies
+
+- [spdlog](https://github.com/gabime/spdlog)
+- [doxygen](https://www.doxygen.nl/)
+
 ## How to compile
+
 ```bash
 mkdir build
 cd build
