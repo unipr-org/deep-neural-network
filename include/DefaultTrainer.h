@@ -42,7 +42,7 @@ class DefaultTrainer : public Trainer<ANN::DefaultNetwork, stream_t, tolerance_t
 		std::string line;
 		data_t &netOutput = output[net.getSize() - 1][0];
 		size_t netSize = net.getSize();
-		size_t input_size = net[0][0].getWeights().size()-1;
+		size_t input_size = net[0][0].getWeights().size() - 1;
 		
 		std::vector<ANN::data_t> vectorTrainingSet;
 		for(size_t i = 0; i < input_size; ++i) {
@@ -84,8 +84,8 @@ class DefaultTrainer : public Trainer<ANN::DefaultNetwork, stream_t, tolerance_t
 				data_t current_error = y - netOutput;
 				spdlog::debug("[train(...)] Current error: {}", current_error);
 
-				backPropagate(net, vectorTrainingSet, output, preactivation, current_error, step);
-				// backPropagateNormalized(net, vectorTrainingSet, output, preactivation, current_error, step);
+				// backPropagate(net, vectorTrainingSet, output, preactivation, current_error, step);
+				backPropagateNormalized(net, vectorTrainingSet, output, preactivation, current_error, step);
 				
 				error += std::abs(current_error);
 
@@ -99,7 +99,7 @@ class DefaultTrainer : public Trainer<ANN::DefaultNetwork, stream_t, tolerance_t
 
 			error /= training_set_size;
 
-			// accuracy = test(net, testSetStream); // TODO levare commento 
+			accuracy = test(net, testSetStream);
 
 			spdlog::info("epoch: {}\t error: {}\t accuracy: {}", r, error, accuracy); 
 
@@ -134,11 +134,10 @@ class DefaultTrainer : public Trainer<ANN::DefaultNetwork, stream_t, tolerance_t
 		size_t netSize = net.getSize();
 		data_vv_t delta = net.getEmptyPreActivationVector();
 
-		// ANN::activationFunction_t g_d = net._activationFunctionDerivative;
 		ANN::activationFunction_t g_d = ANN::getActivationDerivative(net[net.getSize() - 1][0].getActivationFunctionID());
 
 		delta.back()[0] = g_d(preActivation.back()[0]) * current_error;
-		// delta.back()[0] = 1 * current_error;
+
 		spdlog::debug("Evaluated delta for the last layer: {}", delta.back()[0]);
 
 		for (size_t k = 0; k < output[netSize - 2].size(); ++k) {
@@ -220,8 +219,9 @@ class DefaultTrainer : public Trainer<ANN::DefaultNetwork, stream_t, tolerance_t
 		spdlog::debug("current_error: {}", current_error);
 
 		ANN::activationFunction_t g_d = ANN::getActivationDerivative(net[net.getSize() - 1][0].getActivationFunctionID());
-		delta.back()[0] = g_d(preActivation.back()[0]) * current_error;
 		
+		delta.back()[0] = g_d(preActivation.back()[0]) * current_error;
+
 		spdlog::debug("Evaluated delta for the last layer: {}", delta.back()[0]);
 
 		spdlog::debug("Evaluated weight for the last layer");
@@ -245,8 +245,6 @@ class DefaultTrainer : public Trainer<ANN::DefaultNetwork, stream_t, tolerance_t
 
 				for (size_t s = 0; s < next_layer_size; ++s) {
 					spdlog::debug("delta[{}][{}]: {}", i + 1, s, delta[i + 1][s]);
-					// std::cout << std::setprecision(std::numeric_limits<data_t>::max_digits10) << std::scientific
-					// 	<< "delta[" << i + 1 << "][" << s << "]: " << delta[i + 1][s] << std::endl;
 					spdlog::debug("[{}][{}]:", s, j);
 					spdlog::debug("following_layer[{}][{}]: {}", s, j, following_layer[s][j]);
 					sum += (following_layer[s][j] * delta[i + 1][s]);
