@@ -83,7 +83,7 @@ and look for the `index.html` inside `doc/html/`.
 - [x] Ridirigere l'output della compilazione di doxygen da qualche altra parte
 - [x] Algoritmo di testing
 - [x] Implementare funzione test e statistiche
+- [x] Metodo getActivationFunction che restituisce g() e con una mappa otteniamo g’()
 - [ ] Parallelizzazione (`thread`)
-- [ ] Metodo getActivationFunction che restituisce g() e con una mappa otteniamo g’()
 - [ ] Scrivere la documentazione mancante
 

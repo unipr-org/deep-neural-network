@@ -49,6 +49,7 @@ class DefaultTrainer : public Trainer<ANN::DefaultNetwork, stream_t, tolerance_t
 			vectorTrainingSet.push_back(0);
 		}
 
+		Utils::DefaultLoader l;
 		data_t error = 0.0;
 		data_t accuracy = 0;
 		
@@ -94,14 +95,13 @@ class DefaultTrainer : public Trainer<ANN::DefaultNetwork, stream_t, tolerance_t
 			trainingSetStream.clear();
 			trainingSetStream.seekg(0, std::ios::beg);
 
+			l.saveStatus(net);
+
 			error /= training_set_size;
 
-			accuracy = test(net, testSetStream);
+			// accuracy = test(net, testSetStream); // TODO levare commento 
 
 			spdlog::info("epoch: {}\t error: {}\t accuracy: {}", r, error, accuracy); 
-
-			Utils::DefaultLoader l;
-			l.saveStatus(net);
 
 			if (error <= tolerance) {
 				spdlog::info("[train(...)] Training ended after {} epochs with an avg error of {} and an accuracy of {}", r, error, accuracy);
@@ -134,9 +134,11 @@ class DefaultTrainer : public Trainer<ANN::DefaultNetwork, stream_t, tolerance_t
 		size_t netSize = net.getSize();
 		data_vv_t delta = net.getEmptyPreActivationVector();
 
-		ANN::activationFunction_t g_d = net._activationFunctionDerivative;
+		// ANN::activationFunction_t g_d = net._activationFunctionDerivative;
+		ANN::activationFunction_t g_d = ANN::getActivationDerivative(net[net.getSize() - 1][0].getActivationFunctionID());
 
 		delta.back()[0] = g_d(preActivation.back()[0]) * current_error;
+		// delta.back()[0] = 1 * current_error;
 		spdlog::debug("Evaluated delta for the last layer: {}", delta.back()[0]);
 
 		for (size_t k = 0; k < output[netSize - 2].size(); ++k) {
@@ -151,6 +153,8 @@ class DefaultTrainer : public Trainer<ANN::DefaultNetwork, stream_t, tolerance_t
 
 			for (size_t j = 0; j < current_layer.getSize(); ++j) {
 				data_t &current_elem = delta[i][j];
+
+				ANN::activationFunction_t g_d = ANN::getActivationDerivative(net[i][j].getActivationFunctionID());
 
 				// delta[i][j] evaluation
 				current_elem = g_d(preActivation[i][j]);
@@ -212,12 +216,12 @@ class DefaultTrainer : public Trainer<ANN::DefaultNetwork, stream_t, tolerance_t
 		size_t netSize = net.getSize();
 		data_vv_t delta = net.getEmptyPreActivationVector();
 
-		ANN::activationFunction_t g_d = net._activationFunctionDerivative;
-
 		spdlog::debug("preActivation.back()[0]: {}", preActivation.back()[0]);
 		spdlog::debug("current_error: {}", current_error);
 
+		ANN::activationFunction_t g_d = ANN::getActivationDerivative(net[net.getSize() - 1][0].getActivationFunctionID());
 		delta.back()[0] = g_d(preActivation.back()[0]) * current_error;
+		
 		spdlog::debug("Evaluated delta for the last layer: {}", delta.back()[0]);
 
 		spdlog::debug("Evaluated weight for the last layer");
@@ -229,6 +233,8 @@ class DefaultTrainer : public Trainer<ANN::DefaultNetwork, stream_t, tolerance_t
 
 			for (size_t j = 0; j < current_layer.getSize(); ++j) {
 				data_t &current_elem = delta[i][j];
+
+				ANN::activationFunction_t g_d = ANN::getActivationDerivative(net[i][j].getActivationFunctionID());
 
 				// delta[i][j] evaluation
 				current_elem = g_d(preActivation[i][j]);

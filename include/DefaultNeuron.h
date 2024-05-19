@@ -19,6 +19,7 @@ class DefaultNeuron : public Neuron<> {
   private:
 	weight_vector_t _weights;
 	activationFunction_t _activationFunction;
+	ActivationFunctionID _activationFunctionId;
 
   public:
 	/**
@@ -26,22 +27,21 @@ class DefaultNeuron : public Neuron<> {
 	 *
 	 * This constructor creates a DefaultNeuron object without any parameters.
 	 */
-	inline DefaultNeuron() : _weights(), _activationFunction(tanh) {
+	inline DefaultNeuron() : _weights(), _activationFunction(sigmoid), _activationFunctionId(ActivationFunctionID::SIGMOID) {
 		spdlog::debug("[DefaultNeuron::DefaultNeuron()] created DefaultNeuron");
 	}
 
 	/**
-	 * @brief Constructor for DefaultNeuron with specified weights and activation function.
-	 *
-	 * @param weights The vector of weights to initialize the neuron.
-	 * @param activationFunction The activation function to use. Default is sigmoid.
-	 *
-	 * This constructor creates a DefaultNeuron object with the specified weights and activation
-	 * function.
+	 * @brief Constructs a DefaultNeuron with the given weights and activation function.
+	 * 
+	 * @param weights The weights of the neuron.
+	 * @param activationFunction The activation function of the neuron.
+	 * @param activationFunctionId The identifier of the activation function.
 	 */
 	inline DefaultNeuron(const weight_vector_t &weights,
-						 const activationFunction_t &activationFunction = tanh)
-		: _weights(weights), _activationFunction(activationFunction) {
+						 const activationFunction_t &activationFunction = sigmoid,
+						 const ActivationFunctionID &activationFunctionId = ActivationFunctionID::SIGMOID)
+		: _weights(weights), _activationFunction(activationFunction), _activationFunctionId(activationFunctionId) {
 
 		spdlog::debug("[DefaultNeuron::DefaultNeuron(const weight_vector_t &, const "
 					  "activationFunction_t &)] created DefaultNeuron");
@@ -65,9 +65,15 @@ class DefaultNeuron : public Neuron<> {
 		spdlog::debug(msg);
 	}
 
-	inline void setActivationFunction(const activationFunction_t &activationFunction) override {
-		_activationFunction = activationFunction;
-		spdlog::debug("[DefaultNeuron::setActivationFunction(const activationFunction_t &)]");
+	// inline void setActivationFunction(const activationFunction_t &activationFunction) override {
+	// 	_activationFunction = activationFunction;
+	// 	spdlog::debug("[DefaultNeuron::setActivationFunction(const activationFunction_t &)]");
+	// }
+
+	inline void setActivationFunctionId(const ActivationFunctionID &activationFunctionId) override {
+		_activationFunctionId = activationFunctionId;
+		_activationFunction = ANN::getActivationFunction(activationFunctionId);
+		spdlog::debug("[DefaultNeuron::setActivationFunction(const ActivationFunctionID &activationFunctionId)]");
 	}
 
 	inline weight_vector_t &getWeights() override { return _weights; }
@@ -75,6 +81,9 @@ class DefaultNeuron : public Neuron<> {
 	inline size_t getSize() const override { return _weights.size(); }
 	inline const activationFunction_t &getActivationFunction() const override {
 		return _activationFunction;
+	}
+	inline const ActivationFunctionID &getActivationFunctionID() const override {
+		return _activationFunctionId;
 	}
 
 	inline data_t evaluate(const data_vector_t &input) const override {

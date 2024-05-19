@@ -40,7 +40,14 @@ class Neuron {
 	 *
 	 * @param activationFunction The activation function to set.
 	 */
-	inline virtual void setActivationFunction(const activationFunction_t &) = 0;
+	// inline virtual void setActivationFunction(const activationFunction_t &) = 0;
+
+	/**
+	 * @brief Sets the activation function ID of the neuron.
+	 *
+	 * @param activationFunction The activation function ID to set.
+	 */
+	inline virtual void setActivationFunctionId(const ActivationFunctionID &) = 0;
 
 	/**
 	 * @brief Gets the weights of the neuron.
@@ -69,6 +76,13 @@ class Neuron {
 	 * @return Const reference to the activation function.
 	 */
 	inline virtual const activationFunction_t &getActivationFunction() const = 0;
+
+	/**
+	 * @brief Gets the activation function ID of the neuron (const version).
+	 *
+	 * @return Const reference to the activation function ID.
+	 */
+	inline virtual const ActivationFunctionID &getActivationFunctionID() const = 0;
 
 	/**
 	 * @brief Accesses the weight at the specified index.

@@ -206,6 +206,33 @@ void test_NewEvaluateXOR() {
 	info("END test_NewEvaluateXOR");
 }
 
+void test_getActivationDerivative() {
+	info("START test_getActivationDerivative");
+
+	DefaultNetwork net;
+	vector<unsigned> topology = {1, 1};
+	net.createLayers(topology, 3);
+	net.randomizeWeights();
+
+	net[0][0].setActivationFunctionId(ANN::ActivationFunctionID::TANH);
+	net[1][0].setActivationFunctionId(ANN::ActivationFunctionID::IDENTITY);
+    
+    activationFunction_t g = net[1][0].getActivationFunction();
+    std::cout << "Identity(10) = " << g(10) << std::endl;
+    activationFunction_t g_d = getActivationDerivative(net[1][0].getActivationFunctionID());
+    std::cout << "Identity Derivative(20) = " << g_d(20) << std::endl;
+
+    activationFunction_t g1 = net[0][0].getActivationFunction();
+    std::cout << "Tanh(10) = " << g1(10) << std::endl;
+    std::cout << "Direct Tanh(10) = " << tanh(10) << std::endl;
+    
+    activationFunction_t g_d1 = getActivationDerivative(net[0][0].getActivationFunctionID());
+    std::cout << "Tanh Derivative(1) = " << g_d1(1) << std::endl;
+    std::cout << "Direct Tanh Derivative(1) = " << tanh_d(1) << std::endl;
+
+	info("END test_getActivationDerivative");
+}
+
 int main(int argc, char *argv[]) {
 #ifdef DEBUG
 	spdlog::set_level(spdlog::level::trace);
@@ -213,10 +240,12 @@ int main(int argc, char *argv[]) {
 	spdlog::set_level(spdlog::level::info);
 #endif // DEBUG
 
-	/* test_EvaluateOneLayer(); */
-	test_NewEvaluateXOR();
-	cout << "THE END" << endl;
-	test_SaveStatus();
+	// test_EvaluateOneLayer();
+	// test_NewEvaluateXOR();
+
+	test_getActivationDerivative();
+	
+	// test_SaveStatus();
 
 	return 0;
 }

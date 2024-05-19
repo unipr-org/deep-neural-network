@@ -136,6 +136,14 @@ inline data_t heaviside(data_t x) { return (x >= 0) ? 1 : 0; }
 inline data_t identity(data_t x) { return x; }
 
 /**
+ * @brief Derivative of the identity activation function.
+ *
+ * @param x The input value.
+ * @return 1.
+ */
+inline data_t identity_d(data_t x) { return 1; }
+
+/**
  * @brief Hyperbolic tangent (tanh) activation function.
  *
  * @param x The input value.
@@ -163,6 +171,69 @@ inline data_t tanh(data_t x) {
  */
 inline data_t tanh_d(data_t x) {
 	return (1 - pow(tanh(x), 2));
+}
+
+/**
+ * @brief Enum representing the identifiers of supported activation functions.
+ * 
+ * SIGMOID: Sigmoid function
+ * TANH: Hyperbolic tangent function
+ * IDENTITY: Identity function
+ */
+enum class ActivationFunctionID {
+    SIGMOID,
+    TANH,
+    IDENTITY
+};
+
+/**
+ * @brief Map of activation functions to their respective identifiers.
+ */
+std::unordered_map<ActivationFunctionID, activationFunction_t> activationFunctions = {
+    {ActivationFunctionID::SIGMOID, sigmoid},
+    {ActivationFunctionID::TANH, tanh},
+    {ActivationFunctionID::IDENTITY, identity}
+};
+
+/**
+ * @brief Map of activation function derivatives to their respective identifiers.
+ */
+std::unordered_map<ActivationFunctionID, activationFunction_t> activationDerivatives = {
+    {ActivationFunctionID::SIGMOID, sigmoid_d},
+    {ActivationFunctionID::TANH, tanh_d},
+    {ActivationFunctionID::IDENTITY, identity_d}
+};
+
+/**
+ * @brief Gets the activation function corresponding to the specified identifier.
+ * 
+ * @param id Activation function identifier.
+ * @return Corresponding activation function.
+ * @throws std::invalid_argument if the activation function identifier is unknown.
+ */
+activationFunction_t getActivationFunction(const ActivationFunctionID &id) {
+    auto it = activationFunctions.find(id);
+    if (it != activationFunctions.end()) {
+        return it->second;
+    } else {
+        throw std::invalid_argument("Unknown activation function ID");
+    }
+}
+
+/**
+ * @brief Gets the derivative of the activation function corresponding to the specified identifier.
+ * 
+ * @param id Activation function identifier.
+ * @return Derivative of the corresponding activation function.
+ * @throws std::invalid_argument if the activation function identifier is unknown.
+ */
+activationFunction_t getActivationDerivative(const ActivationFunctionID &id) {
+    auto it = activationDerivatives.find(id);
+    if (it != activationDerivatives.end()) {
+        return it->second;
+    } else {
+        throw std::invalid_argument("Unknown activation function ID");
+    }
 }
 
 } // namespace ANN

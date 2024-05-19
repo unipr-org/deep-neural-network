@@ -45,11 +45,13 @@ void test_Train() {
 		info("Loaded Network");
 		model.close();
 	}	
-	cout << net << endl;
+	// cout << net << endl;
+	net[net.getSize() - 1][0].setActivationFunctionId(ANN::ActivationFunctionID::IDENTITY);
 
 	DefaultTrainer trainer;
 
-	trainer.train(net, training_set, test_set, 0.000001, 3000, 0.00000001);
+	// trainer.train(net, training_set, test_set, 0.000001, 3000, 0.00000001);
+	trainer.train(net, training_set, test_set, 0.000001, 20, 0.00001);
 	
 	training_set.close();
 	test_set.close();
