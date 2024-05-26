@@ -51,11 +51,12 @@ class DefaultTrainer : public Trainer<ANN::DefaultNetwork, stream_t, tolerance_t
 
 		Utils::DefaultLoader l;
 		data_t error = 0.0;
-		data_t accuracy = 0;
+		data_t accuracy = 0.0;
 		
 		// Epochs
 		for (size_t r = 1; r <= epochs; ++r) {
 			error = 0.0;
+			accuracy = 0.0;
 			size_t training_set_size = 0;
 
 			while (getline(trainingSetStream, line)) {
@@ -73,10 +74,8 @@ class DefaultTrainer : public Trainer<ANN::DefaultNetwork, stream_t, tolerance_t
 				data_t y;
 				iss >> y;
 
-				// Questa cosa va bene nel caso in cui abbiamo solo un neurone
-				// nell'ultimo layer.
-				// TODO aggiungere un parametro che mi indichi quanti output devo avere
-
+				// This is fine in case we only have one neuron in the last layer
+				// TODO add a parameter that tells me how many outputs I should have
 				net.evaluate(vectorTrainingSet, output, preactivation);
 
 				spdlog::debug("[train(...)] Evaluated");
@@ -140,6 +139,15 @@ class DefaultTrainer : public Trainer<ANN::DefaultNetwork, stream_t, tolerance_t
 
 		spdlog::debug("Evaluated delta for the last layer: {}", delta.back()[0]);
 
+		if(netSize == 1) { // SLP case
+			for (size_t k = 0; k < input.size(); ++k) {
+				net[netSize - 1][0][k] += (step * delta[netSize - 1][0] * input[k]);
+			}
+			spdlog::debug("Evaluated weight for the last layer (SLP)");
+			return; // exit backPropagate
+		}
+		
+		// MLP case below
 		for (size_t k = 0; k < output[netSize - 2].size(); ++k) {
 			net[netSize - 1][0][k] += (step * delta[netSize - 1][0] * output[netSize - 2][k]);
 		}
@@ -224,8 +232,15 @@ class DefaultTrainer : public Trainer<ANN::DefaultNetwork, stream_t, tolerance_t
 
 		spdlog::debug("Evaluated delta for the last layer: {}", delta.back()[0]);
 
-		spdlog::debug("Evaluated weight for the last layer");
+		if(netSize == 1) { // SLP case
+			for (size_t k = 0; k < input.size(); ++k) {
+				net[netSize - 1][0][k] += (step * delta[netSize - 1][0] * input[k]);
+			}
+			spdlog::debug("Evaluated weight for the last layer (SLP)");
+			return; // exit backPropagate
+		}
 
+		// MLP case below
 		for (int i = netSize - 2; i >= 0; --i) {
 
 			ANN::DefaultLayer &current_layer = net[i];
@@ -355,7 +370,8 @@ class DefaultTrainer : public Trainer<ANN::DefaultNetwork, stream_t, tolerance_t
 			data_t y;
 			iss >> y;
 
-			// TODO aggiungere un parametro che mi indichi quanti output devo avere
+			// This is fine in case we only have one neuron in the last layer
+			// TODO add a parameter that tells me how many outputs I should have
 			net.evaluate(vectorTrainingSet, output, preactivation);
 			
 			data_t result = abs(y - output.back()[0]);

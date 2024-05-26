@@ -29,14 +29,11 @@ endforeach()
 
 set(DATASET_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../dataset)
 
+
 # Controlla se la cartella dataset esiste
 if(EXISTS ${DATASET_DIR})
     # Se la cartella esiste, copia i file
-    file(GLOB DATASET_FILES "${DATASET_DIR}/*.txt")
-    foreach(DATASET_FILE ${DATASET_FILES})
-        get_filename_component(FILENAME ${DATASET_FILE} NAME)
-        configure_file(${DATASET_FILE} ${CMAKE_CURRENT_BINARY_DIR}/dataset/${FILENAME} COPYONLY)
-    endforeach()
+    file(COPY ${DATASET_DIR} DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
 else()
     message(WARNING "Dataset directory not found!")
 endif()
