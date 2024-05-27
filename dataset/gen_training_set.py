@@ -7,7 +7,7 @@ def generate_training_set(filename, num_samples):
             x1 = random.uniform(0, 100)
             x2 = random.uniform(0, 100)
             x3 = random.uniform(0, 100)
-            y = x1  # La funzione da implementare
+            y = x1 + x2 + x3  # La funzione da implementare
             file.write(f"{x1} {x2} {x3} {y}\n")
 
 

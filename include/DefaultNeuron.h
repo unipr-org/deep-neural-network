@@ -27,7 +27,7 @@ class DefaultNeuron : public Neuron<> {
 	 *
 	 * This constructor creates a DefaultNeuron object without any parameters.
 	 */
-	inline DefaultNeuron() : _weights(), _activationFunction(sigmoid), _activationFunctionId(ActivationFunctionID::SIGMOID) {
+	inline DefaultNeuron() : _weights(), _activationFunction(identity), _activationFunctionId(ActivationFunctionID::IDENTITY) {
 		spdlog::debug("[DefaultNeuron::DefaultNeuron()] created DefaultNeuron");
 	}
 
@@ -39,8 +39,8 @@ class DefaultNeuron : public Neuron<> {
 	 * @param activationFunctionId The identifier of the activation function.
 	 */
 	inline DefaultNeuron(const weight_vector_t &weights,
-						 const activationFunction_t &activationFunction = sigmoid,
-						 const ActivationFunctionID &activationFunctionId = ActivationFunctionID::SIGMOID)
+						 const activationFunction_t &activationFunction = identity,
+						 const ActivationFunctionID &activationFunctionId = ActivationFunctionID::IDENTITY)
 		: _weights(weights), _activationFunction(activationFunction), _activationFunctionId(activationFunctionId) {
 
 		spdlog::debug("[DefaultNeuron::DefaultNeuron(const weight_vector_t &, const "

@@ -100,15 +100,15 @@ class DefaultTrainer : public Trainer<ANN::DefaultNetwork, stream_t, tolerance_t
 
 			accuracy = test(net, testSetStream);
 
-			spdlog::info("epoch: {}\t error: {}\t accuracy: {}", r, error, accuracy); 
+			spdlog::info("epoch: {}\t error: {}\t accuracy: {}%", r, error, accuracy); 
 
-			if (error <= tolerance) {
-				spdlog::info("[train(...)] Training ended after {} epochs with an avg error of {} and an accuracy of {}", r, error, accuracy);
+			if (error <= tolerance || accuracy == 100.0) {
+				spdlog::info("[train(...)] Training ended after {} epochs with an avg error of {} and an accuracy of {}%", r, error, accuracy);
 				return;
 			}
 		}
 
-		spdlog::info("[train(...)] Training ended after {} epochs with an avg error: {} and an accuracy of {}", epochs, error, accuracy);
+		spdlog::info("[train(...)] Training ended after {} epochs with an avg error: {} and an accuracy of {}%", epochs, error, accuracy);
 		return;
 	}
 
@@ -353,7 +353,7 @@ class DefaultTrainer : public Trainer<ANN::DefaultNetwork, stream_t, tolerance_t
 		
 		error = 0.0;
 		size_t test_set_size = 0;
-		size_t correct = 0;
+		data_t correct = 0.0;
 
 		while (getline(stream, line)) {
 
@@ -387,7 +387,7 @@ class DefaultTrainer : public Trainer<ANN::DefaultNetwork, stream_t, tolerance_t
 		stream.clear();
 		stream.seekg(0, std::ios::beg);
 
-		data_t accuracy = correct / test_set_size;
+		data_t accuracy = correct / test_set_size * 100;
 
 		return accuracy;
 	}

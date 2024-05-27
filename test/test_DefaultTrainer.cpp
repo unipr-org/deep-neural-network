@@ -96,7 +96,7 @@ void test_Train() {
 
 	ifstream model("./model/status.txt");
 	if (!model) {
-		vector<unsigned> topology = {3, 3, 1};
+		vector<unsigned> topology = {6, 1};
 		net.createLayers(topology, 3);
 		net.randomizeWeights();
 		info("Created Network");
@@ -111,6 +111,8 @@ void test_Train() {
 	DefaultTrainer trainer;
 
 	trainer.train(net, training_set, test_set, 0.000001, 3000, 0.0001);
+
+	// cout << "Accuracy: " << trainer.test(net, test_set) << "% " << endl;
 	
 	training_set.close();
 	test_set.close();
